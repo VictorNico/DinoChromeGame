@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DINO Game</title>
+    <link rel="icon" href="./docs/assets/favicon_package_v0/first.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="body">
+    <div id="title-screen">
+        <form class="m-auto">
+            <div class="form-group">
+                <label for="pseudo">Name</label>
+                <input type="text" class="form-control" id="pseudo" aria-describedby="pseudoHelp" placeholder="Enter your name">
+                <small id="pseudoHelp" class="form-text text-muted">There is your pseudo dino user name.</small>
+            </div>
+            <button type="submit" id="title-button-start" class="btn btn-primary">Press to Start</button>
+        </form>
+        <!-- <h6 id="title-button"> Press to Start </h6>
+        <h2 id="zToJump_Start">Press Z to Jump</h2> -->
+    </div>
+
+    <div id="levels" class="fade-out hidden">
+        <img src="./docs/assets/images/smalldemon-removebg-preview.png" class="demon_Left_Level" alt="demon image">
+        <img src="./docs/assets/images/smalldemon-removebg-preview.png" class="demon_Right_Level" alt="demon image">
+        <p class="level_P">Pick your level</p>
+        <h6 id="btn-normal">Hawkins</h6>
+        <h6 id="btn-upsideDown">Upside Down</h6>
+        <h2 id="zToJump_Level">Press Z to Jump</h2>
+    </div>
+
+    <div id="game-over-screen" class="hidden">
+        <div class="container">
+            <div class="row">
+                <div class="col bg-transparent m-auto">
+                    <div class="p-3 border-none">
+                        <h5 id="game-over">Game Over</h5>
+                        <h6 class="try-again-button">Die again?</h6>
+                        <img src="./docs/assets/images/restart_fixed-removebg-preview.png" id="restart-button" alt="restart button">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="p-3 border-none">Scoring</div>
+                    <ul id="list-example" class="list-group bg-transparent border-none">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <canvas id="canvas" width="730" height="552" class="hidden"></canvas>
+    <canvas id="canvas1" width="730" height="552" class="hidden"></canvas>
+
+    <img src="./docs/assets/images/tv_1.jpeg" id="bk-tv" class="bk_tv hidden" alt="Background TV">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="scripts/demonTopo.js"></script>
+    <script src="scripts/demons.js"></script>
+    <script src="scripts/personagem.js"></script>
+    <script src="scripts/game.js"></script>
+    <script src="scripts/rain.js"></script>
+
+
+</body>
+
+</html>

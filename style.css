@@ -1,0 +1,314 @@
+@font-face {
+    font-family: Benguiat Bold;
+    src: url("./docs/assets/fonts/Benguiat Bold.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Benguiat Bold;
+    color: blue;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('./docs/assets/images/tv_nobg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+#title-screen {
+    background-image: url('./docs/assets/images/tv_nobg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-title {
+    top: 21%;
+    right: 45%;
+    position: absolute;
+    width: 320px;
+}
+
+#jump {
+    position: absolute;
+    font-size: 35px;
+    top: 40%;
+    right: 51%;
+}
+
+#title-button {
+    position: absolute;
+    top: 52%;
+    right: 46.5%;
+    font-size: 28px;
+    flex-wrap: wrap;
+    border: 4px solid red;
+    border-radius: 50px;
+    padding: 10px;
+}
+
+.demon_Left {
+    position: absolute;
+    right: 64.5%;
+    bottom: 41.5%;
+    width: 75px;
+}
+
+.demon_Right {
+    position: absolute;
+    left: 53.5%;
+    bottom: 41%;
+    width: 75px;
+}
+
+.demon_Left_Level {
+    position: absolute;
+    left: 32.8%;
+    bottom: 49.9%;
+    width: 50px;
+}
+
+.demon_Right_Level {
+    transform: rotate(180deg);
+    position: absolute;
+    width: 50px;
+    bottom: 36.6%;
+    right: 45%;
+}
+
+#game-over-screen {
+    background-image: url('./docs/assets/images/tv_nobg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-over {
+    font-size: 62px;
+    position: absolute;
+    top: 26%;
+    right: 41%;
+}
+
+.try-again-button {
+    position: absolute;
+    font-size: 22px;
+    top: 46%;
+    right: 50.5%
+}
+
+#restart-button {
+    position: absolute;
+    top: 52%;
+    right: 54%;
+    width: 60px;
+    border-radius: 10px;
+}
+
+.list-group,
+.list-group-item {
+    border: none;
+}
+
+ul,
+li {
+    border: none;
+}
+
+#canvas {
+    border: 1px solid transparent;
+    position: absolute;
+    top: 48%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    width: 46vw;
+    height: 66vh;
+    background-size: cover;
+    border-radius: 10px;
+}
+
+#canvas1 {
+    border: 1px solid transparent;
+    position: absolute;
+    top: 48%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+    width: 46vw;
+    height: 66vh;
+    background-color: transparent;
+    background-size: cover;
+    border-radius: 10px;
+}
+
+.first-background {
+    background-color: white;
+    /* background-image: url("./docs/assets/images/ground.png");
+    background-repeat: repeat-x; */
+}
+
+.bk_tv {
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+}
+
+@media screen and (max-width: 768px) {
+    #game-title {
+        top: 22%;
+        right: 40%;
+        width: 120px;
+    }
+    #jump {
+        top: 29%;
+        right: 48%;
+        font-size: 16px;
+    }
+    #title-button {
+        top: 45%;
+        right: 38%;
+        font-size: 14px;
+    }
+    #zToJump_Start {
+        top: 67%;
+        right: 41%;
+        font-size: 12px;
+    }
+    .demon_Left {
+        right: 53%;
+        bottom: 45%;
+        width: 0px;
+    }
+    .demon_Right {
+        left: 39%;
+        bottom: 56%;
+        width: 35px;
+    }
+    body {
+        background-image: url('./docs/assets/images/tv_nobg.jpg');
+        background-repeat: no-repeat;
+        background-size: 100vw 100vh;
+    }
+    #title-screen {
+        background-image: url('./docs/assets/images/tv_nobg.jpg');
+        background-repeat: no-repeat;
+        background-size: 0px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .level_P {
+        top: 25%;
+        right: 40%;
+        font-size: 14px;
+    }
+    #btn-normal {
+        top: 38%;
+        left: 31%;
+        font-size: 14px;
+    }
+    #btn-upsideDown {
+        top: 50%;
+        right: 38%;
+        font-size: 14px;
+    }
+    #zToJump_Level {
+        top: 67%;
+        right: 41%;
+        font-size: 12px;
+    }
+    .demon_Left_Level {
+        left: 40%;
+        bottom: 63%;
+        width: 35px;
+    }
+    .demon_Right_Level {
+        transform: rotate(180deg);
+        width: 35px;
+        bottom: 40%;
+        right: 50%;
+    }
+    #game-over-screen {
+        background-image: url('./docs/assets/images/tv_nobg.jpg');
+        background-repeat: no-repeat;
+        background-size: 0px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #game-over {
+        font-size: 38px;
+        position: absolute;
+        top: 25%;
+        right: 63%;
+        width: 35px;
+    }
+    .try-again-button {
+        position: absolute;
+        font-size: 18px;
+        top: 43%;
+        right: 41%
+    }
+    #restart-button {
+        position: absolute;
+        top: 48%;
+        right: 52%;
+        width: 35px;
+        border-radius: 10px;
+    }
+}
+
+.fa-heart {
+    color: rgb(60, 0, 60);
+    font-size: 25px;
+    position: absolute;
+    animation: heartMove linear 1;
+    top: -10vh;
+    z-index: 0;
+}
+
+@keyframes heartMove {
+    0% {
+        transform: translateY(-10vh);
+    }
+    100% {
+        transform: translateY(110vh);
+    }
+}
