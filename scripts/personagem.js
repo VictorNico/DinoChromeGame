@@ -63,7 +63,7 @@ class Player {
 
         // bend move of the s or thre arrow down key is pressed
         if (keys["KeyS"] || keys["ArrowDown"]) {
-            this.height = this.height - this.height * (3 / 100);
+            this.height = this.height_c - this.height_c * (20 / 100);
         } else {
             this.height = this.height_c;
         };

@@ -42,12 +42,12 @@ class Obstacle {
 function spawnObstacle() {
     let size = demonSize(65, 65);
     let obstacle;
-
+    // console.log({cHeight,cWidth});
     if (Math.round(Math.random() * 2) == 0) {
-        let a = [552, 452];
-        obstacle = new Obstacle2(730 + size, a[Math.floor(Math.random() * 2)] - size, size, size);
+        let a = [cHeight, cHeight-2*size];
+        obstacle = new Obstacle2(cWidth + size, a[Math.floor(Math.random() * 2)] - size, size, size);
     } else {
-        obstacle = new Obstacle(730 + size, 552 - size, size, size);
+        obstacle = new Obstacle(cWidth + size, cHeight - size, size, size);
     };
 
     obstacles.push(obstacle);
