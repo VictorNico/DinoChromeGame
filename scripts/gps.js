@@ -9,10 +9,11 @@ class GPS {
     Watcher() {
         let id;
         let options;
+        let that = this;
 
         function success(pos) {
-            this.lon = pos.coords.longitude;
-            this.lat = pos.coords.latitude;
+            that.lon = pos.coords.longitude;
+            that.lat = pos.coords.latitude;
         }
 
         function error(err) {
@@ -25,10 +26,10 @@ class GPS {
             maximumAge: 0
         };
 
-        this.observer = navigator.geolocation.watchPosition(success, error, options);
+        this.observer = navigator.geolocation.getCurrentPosition(success, error, options);
     }
 
-    getlat() {
+    getLat() {
         return this.lat;
     }
 

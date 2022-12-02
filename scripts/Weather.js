@@ -20,6 +20,7 @@ class Weather {
         this.scatteredCloud = [802];
         this.overcastCloud = [804];
         this.unknPrecipitation = [900];
+        this.getCurrentWeather()
     }
 
     /**
@@ -54,6 +55,7 @@ class Weather {
          * Unknown Precipitation:
          * 900
          */
+        let that = this;
         const options = {
             method: 'GET',
             url: 'https://weatherbit-v1-mashape.p.rapidapi.com/current',
@@ -68,7 +70,72 @@ class Weather {
         };
 
         await axios.request(options).then(function(response) {
-            this.currentWeather = response.data;
+            that.currentWeather = response.data.data[0];
+            weather = that.getDecisionWeather();
+            period = that.getDecisionPeriod();
+            document.getElementById('validationDefault02').value = weather;
+            document.getElementById('validationDefault03').value = period;
+            if(weather.localeCompare("rain")){
+                console.log(document.getElementById('snow').innerHTML);
+                if(document.getElementById('snow').innerHTML.localeCompare("")){
+                    let inner = `
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                    <div class="snowflake"></div>
+                     `
+                     document.getElementById('snow').innerHTML = inner;
+                }
+            }else{
+                document.getElementById('snow').innerHTML = "";
+            }
             console.log(response.data);
         }).catch(function(error) {
             console.error(error);
@@ -80,7 +147,12 @@ class Weather {
     }
 
     getDecisionWeather() {
-        if (this.rain.includes(this.currentWeathe.weather.code)) { return "rain"; } else if (this.drizzle.includes(this.currentWeathe.weather.code)) { return "drizzle"; } else if (this.snow.includes(this.currentWeathe.weather.code)) { return "snow"; } else if (this.hail.includes(this.currentWeathe.weather.code)) { return "hail"; } else if (this.clearSky.includes(this.currentWeathe.weather.code)) { return "clearSky"; } else if (this.fewCloud.includes(this.currentWeathe.weather.code)) { return "fewCloud"; } else if (this.scatteredCloud.includes(this.currentWeathe.weather.code)) { return "scatteredCloud"; } else if (this.overcastCloud.includes(this.currentWeathe.weather.code)) { return "overcastCloud"; } else if (this.unknPrecipitation.includes(this.currentWeathe.weather.code)) { return "unknPrecipitation"; }
-        return "clearSky";
+        console.log(this);
+        if (this.rain.includes(this.currentWeather.weather.code)) { return "rain"; } else if (this.drizzle.includes(this.currentWeather.weather.code)) { return "rain"; } else if (this.snow.includes(this.currentWeather.weather.code)) { return "rain"; } else if (this.hail.includes(this.currentWeather.weather.code)) { return "rain"; } else if (this.clearSky.includes(this.currentWeather.weather.code)) { return "sun"; } else if (this.fewCloud.includes(this.currentWeather.weather.code)) { return "sun"; } else if (this.scatteredCloud.includes(this.currentWeather.weather.code)) { return "sun"; } else if (this.overcastCloud.includes(this.currentWeather.weather.code)) { return "sun"; } else if (this.unknPrecipitation.includes(this.currentWeather.weather.code)) { return "rain"; }
+        return "rain";
+    }
+
+    getDecisionPeriod(){
+        return this.currentWeather.pod == 'n'?'nuit':'jour';
     }
 }

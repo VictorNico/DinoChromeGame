@@ -1,0 +1,51 @@
+{
+    "count": 1,
+    "data": [
+        {
+            "app_temp": 21.8,
+            "aqi": 143,
+            "city_name": "Yaoundé",
+            "clouds": 75,
+            "country_code": "CM",
+            "datetime": "2022-12-02:07",
+            "dewpt": 21,
+            "dhi": 87.93,
+            "dni": 766.81,
+            "elev_angle": 25.18,
+            "ghi": 407.72,
+            "gust": null,
+            "h_angle": -60,
+            "lat": 3.8646,
+            "lon": 11.4972,
+            "ob_time": "2022-12-02 07:24",
+            "pod": "d",
+            "precip": 0,
+            "pres": 930.3,
+            "rh": 100,
+            "slp": 1015,
+            "snow": 0,
+            "solar_rad": 269.7,
+            "sources": [
+                "FKYS"
+            ],
+            "state_code": "11",
+            "station": "FKYS",
+            "sunrise": "05:05",
+            "sunset": "17:01",
+            "temp": 21,
+            "timezone": "Africa/Douala",
+            "ts": 1669965885,
+            "uv": 1.4530708,
+            "vis": 16,
+            "weather": {
+                "icon": "c03d",
+                "description": "Broken clouds",
+                "code": 803
+            },
+            "wind_cdir": "N",
+            "wind_cdir_full": "north",
+            "wind_dir": 0,
+            "wind_spd": 1
+        }
+    ]
+}
