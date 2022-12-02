@@ -4,13 +4,13 @@ function drawCanvas(parent, id) {
     let canvas = document.createElement('canvas');
     div = document.getElementById(parent);
     canvas.id = id;
-    if(window.mobileCheck() == true){
-        canvas.width = window.screen.width;
-        canvas.height = window.screen.height;
-    }else{
+    // if(window.mobileCheck() == true){
+    //     canvas.width = window.screen.width;
+    //     canvas.height = window.screen.height;
+    // }else{
         canvas.width = window.screen.width;
         canvas.height = window.screen.height - 8*window.screen.height/100;
-    }
+    // }
     
     div.appendChild(canvas)
 }
@@ -65,16 +65,22 @@ function update() {
 //     ctx.drawImage(background,0,0);   
 // }
     if(window.mobileCheck() == true){
-        ctx.font = "4vh Arial";
+        ctx.font = "2vh Arial";
     }else{
         ctx.font = "4vh Arial";
     }
-    ctx.font = "2vh Arial";
+    
     ctx.fillText("" + window.atob(localStorage.getItem("lastname")), 0, 50);
     let best = Object.keys(bestP).length !== 0 ? bestP.score : players[players.length - 1].score;
     let current = players[players.length - 1];
-    ctx.fillText("best score : " + best, cWidth - 10*cWidth/100, 50);
-    ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 10*cWidth/100, 80);
+    if(window.mobileCheck() == true){
+        ctx.fillText("best score : " + best, cWidth - 30*cWidth/100, 50);
+        ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 30*cWidth/100, 80);
+    }else{
+        ctx.fillText("best score : " + best, cWidth - 10*cWidth/100, 50);
+        ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 10*cWidth/100, 80);
+    }
+    
 
     spawnTimer--;
     if (spawnTimer <= 0) {
