@@ -57,13 +57,13 @@ function update() {
     ctx.clearRect(0, 0, cWidth, cHeight);
     // add the pseudo name
     ctx.fillStyle = "white";
-    var background = new Image();
-background.src = "../docs/assets/images/ground.png";
+//     var background = new Image();
+// background.src = "../docs/assets/images/ground.png";
 
-// Make sure the image is loaded first otherwise nothing will draw.
-background.onload = function(){
-    ctx.drawImage(background,0,0);   
-}
+// // Make sure the image is loaded first otherwise nothing will draw.
+// background.onload = function(){
+//     ctx.drawImage(background,0,0);   
+// }
     if(window.mobileCheck() == true){
         ctx.font = "4vh Arial";
     }else{
