@@ -40,7 +40,7 @@ class Obstacle {
 };
 
 function spawnObstacle() {
-    let size = demonSize(65, 65);
+    let size = demonSize(45, 65);
     let obstacle;
     // console.log({cHeight,cWidth});
     if (Math.round(Math.random() * 2) == 0) {

@@ -8,8 +8,13 @@ function drawCanvas(parent, id) {
     //     canvas.width = window.screen.width;
     //     canvas.height = window.screen.height;
     // }else{
+    if(window.mobileCheck() == true){
         canvas.width = window.screen.width;
         canvas.height = window.screen.height - 8*window.screen.height/100;
+    }else{
+        canvas.width = window.screen.width;
+        canvas.height = window.screen.height - 12*window.screen.height/100;
+    }
     // }
     
     div.appendChild(canvas)
@@ -67,7 +72,7 @@ function update() {
     if(window.mobileCheck() == true){
         ctx.font = "2vh Arial";
     }else{
-        ctx.font = "4vh Arial";
+        ctx.font = "2vh Arial";
     }
     
     ctx.fillText("" + window.atob(localStorage.getItem("lastname")), 0, 50);
