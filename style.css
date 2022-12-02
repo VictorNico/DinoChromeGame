@@ -109,10 +109,10 @@ body {
 }
 
 #game-over {
-    font-size: 62px;
+    font-size: 42px;
     position: absolute;
-    top: 26%;
-    right: 41%;
+    top: 22%;
+    right: 45%;
 }
 
 .try-again-button {
@@ -125,7 +125,7 @@ body {
 #restart-button {
     position: absolute;
     top: 52%;
-    right: 54%;
+    right: 64%;
     width: 60px;
     border-radius: 10px;
 }

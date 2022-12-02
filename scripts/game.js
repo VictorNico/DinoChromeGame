@@ -5,6 +5,7 @@ const ctx = canvas.getContext('2d');
 let images;
 
 let players = [];
+let bestP = {};
 
 images = [
     "./docs/assets/images/player_frames_img/dino-run-0.png",
@@ -25,12 +26,6 @@ const upsideDownButton = document.getElementById('btn-upsideDown');
 titleButton.onclick = () => {
     event.preventDefault();
     if (document.getElementById('pseudo').value != "") {
-        players.push({
-            "name": document.getElementById('pseudo').value,
-            "score": 0,
-            "start": new Date(),
-            "end": new Date()
-        })
         song.play();
         titleScreen.classList.toggle('hidden');
         levelsScreen.classList.toggle('hidden');
@@ -39,7 +34,20 @@ titleButton.onclick = () => {
         canvas1.classList.toggle('hidden');
         canvas.classList.toggle('first-background');
         bgTVScreen.classList.toggle('hidden');
-        localStorage.setItem("lastname", document.getElementById('pseudo').value);
+        localStorage.setItem("lastname", window.btoa(document.getElementById('pseudo').value));
+        if (localStorage.getItem("listP")) {
+            /* console.log(Object.values(JSON.parse(window.atob(localStorage.getItem("listP"))))[0]); */
+            players = Object.values(JSON.parse(window.atob(localStorage.getItem("listP"))));
+            bestP = players[0];
+            /* console.log(players);
+            console.log(bestP); */
+        }
+        players.push({
+            "name": document.getElementById('pseudo').value,
+            "score": 0,
+            "start": new Date(),
+            "end": new Date()
+        });
         document.getElementById('pseudo').value = "";
         start();
     }
@@ -92,7 +100,11 @@ function update() {
     ctx.clearRect(0, 0, cWidth, cHeight);
     // add the pseudo name
     ctx.font = "28px Arial";
-    ctx.fillText("" + localStorage.getItem("lastname"), 10, 50);
+    ctx.fillText("" + window.atob(localStorage.getItem("lastname")), 10, 50);
+    ctx.font = "18px Arial";
+    let best = Object.keys(bestP).length !== 0 ? bestP.score : players[players.length - 1].score;
+    ctx.fillText("best score : " + best, 570, 50);
+    ctx.fillText("your score : " + players[players.length - 1].score, 570, 80);
 
     spawnTimer--;
     if (spawnTimer <= 0) {
@@ -125,8 +137,9 @@ function update() {
 
                 liste += `<li class="list-group-item bg-transparent border-none">  ${players[i].name}  -> score:  ${players[i].score} </li> \n`;
             }
-            console.table({ players, liste });
+            /* console.table({ players, liste }); */
             completelist.innerHTML = liste;
+            localStorage.setItem("listP", window.btoa(JSON.stringify(Object.assign({}, players))));
 
             obstacles = [];
             clearInterval(interval);
@@ -146,9 +159,10 @@ function update() {
 
     player.animate();
     player.playerDraw(frames);
+    // update game 
     gameSpeed += 0.010;
 };
-
+// compute score
 function end(startTime, endTime) {
     let timeDiff = endTime - startTime; //in ms
     // strip the ms
