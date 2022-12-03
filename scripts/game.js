@@ -7,6 +7,10 @@ const gameOverScreen = document.getElementById('game-over-screen');
 const saveButton = document.getElementById('save');
 const titleButton = document.getElementById('title-button-start');
 const restartButton = document.getElementById('restart-button');
+const reloadButton = document.getElementById('reloadP');
+const soundChecker = document.getElementById('inlineCheckbox1');
+
+
 // differents t-rex states
 images = [
     "./docs/assets/images/player_frames_img/dino-run-0.png",
@@ -18,12 +22,51 @@ images = [
 // listeners
 saveButton.onclick = () => {
     event.preventDefault();
-    gameSpeed = document.getElementById('validationDefault01').value;
-    period = document.getElementById('validationDefault03').value;
-    weather = document.getElementById('validationDefault02').value;
-    stopPeriodWatcher();
-    startPeriodWatcherU();
+    if(document.getElementById('validationDefault03').value.localeCompare("") != 0 
+        && document.getElementById('validationDefault02').value.localeCompare("") != 0)
+    {
+        gameSpeed = document.getElementById('validationDefault01').value;
+        period = document.getElementById('validationDefault03').value;
+        weather = document.getElementById('validationDefault02').value;
+        stopPeriodWatcher();
+        startPeriodWatcherU();
+        let toastLiveExample = document.getElementById('liveToast')
+        toastLiveExample.classList.toggle('d-none');
+        let toast = new bootstrap.Toast(toastLiveExample)
+    
+        toast.show();
+    }else{
+        let toastLiveExample = document.getElementById('liveToast1')
+        toastLiveExample.classList.toggle('d-none');
+        let toast = new bootstrap.Toast(toastLiveExample)
+    
+        toast.show();
+    }
 
+}
+document.getElementById('cls1').onclick =()=>{
+    document.getElementById('liveToast').classList.toggle('d-none');
+}
+document.getElementById('cls2').onclick =()=>{
+    document.getElementById('liveToast1').classList.toggle('d-none');
+}
+
+reloadButton.onclick = () => {
+    event.preventDefault();
+    stopPeriodWatcher();
+    startPeriodWatcher();
+
+}
+
+soundChecker.onchange = () => {
+    event.preventDefault();
+    if(soundChecker.checked){
+        song.play();
+    }
+    else{
+        song.pause();
+    }
+    console.log(soundChecker.checked)
 }
 
 
@@ -39,7 +82,6 @@ titleButton.onclick = () => {
         // console.log(document.getElementById('canvasP').innerHTML);
         cWidth = canvas.width;
         cHeight = canvas.height;
-        song.play();
         titleScreen.classList.toggle('d-none');
         levelsScreen.classList.toggle('d-none');
         levelsScreen.classList.toggle('d-none');
@@ -53,6 +95,7 @@ titleButton.onclick = () => {
             /* console.log(players);
             console.log(bestP); */
         }
+        
         players.push({
             "name": document.getElementById('pseudo').value,
             "score": 0,
@@ -74,3 +117,7 @@ restartButton.onclick = () => {
 
 // watch period
 startPeriodWatcher();
+let listening = document.body.addEventListener("click", function () {
+    song.play()
+    delete listening;
+})

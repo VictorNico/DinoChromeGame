@@ -11,10 +11,10 @@ class Weather {
         this.gps = new GPS();
         this.currentWeather = null;
         this.interval = null;
-        this.rain = [200, 201, 202, 500, 501, 502, 511, 520, 521, 522];
-        this.drizzle = [230, 231, 232, 300, 301, 302];
+        this.rain = [500, 501, 502, 511, 520, 521, 522, 300, 301, 302];
+        this.rainsun = [200, 201, 202]
+        this.drizzle = [230, 231, 232,233,611,612,700,711,721,731,741,751,];
         this.snow = [600, 601, 602, 610];
-        this.hail = [233];
         this.clearSky = [800];
         this.fewCloud = [801];
         this.scatteredCloud = [802];
@@ -150,7 +150,15 @@ class Weather {
 
     getDecisionWeather() {
         console.log(this);
-        if (this.rain.includes(this.currentWeather.weather.code)) { return "rain"; } else if (this.drizzle.includes(this.currentWeather.weather.code)) { return "rain"; } else if (this.snow.includes(this.currentWeather.weather.code)) { return "rain"; } else if (this.hail.includes(this.currentWeather.weather.code)) { return "rain"; } else if (this.clearSky.includes(this.currentWeather.weather.code)) { return "sun"; } else if (this.fewCloud.includes(this.currentWeather.weather.code)) { return "sun"; } else if (this.scatteredCloud.includes(this.currentWeather.weather.code)) { return "sun"; } else if (this.overcastCloud.includes(this.currentWeather.weather.code)) { return "sun"; } else if (this.unknPrecipitation.includes(this.currentWeather.weather.code)) { return "rain"; }
+        if (this.rain.includes(this.currentWeather.weather.code)) { return "rain"; } 
+        else if (this.drizzle.includes(this.currentWeather.weather.code)) { return "sun"; } 
+        else if (this.snow.includes(this.currentWeather.weather.code)) { return "rain"; } 
+        else if (this.rainsun.includes(this.currentWeather.weather.code)) { return "rain,sun"; } 
+        else if (this.clearSky.includes(this.currentWeather.weather.code)) { return "sun"; } 
+        else if (this.fewCloud.includes(this.currentWeather.weather.code)) { return "sun"; } 
+        else if (this.scatteredCloud.includes(this.currentWeather.weather.code)) { return "sun"; } 
+        else if (this.overcastCloud.includes(this.currentWeather.weather.code)) { return "sun"; } 
+        else if (this.unknPrecipitation.includes(this.currentWeather.weather.code)) { return "rain"; }
         return "rain";
     }
 

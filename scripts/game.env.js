@@ -89,11 +89,15 @@ function update() {
     let current = players[players.length - 1];
     let Clock = new clocks();
     if(window.mobileCheck() == true){
+        ctx.fillText(Clock.getTime(), cWidth - 32*cWidth/100, 30);
         ctx.fillText("best score : " + best, cWidth - 30*cWidth/100, 50);
-        ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 30*cWidth/100, 80);
+        ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 30*cWidth/100, 70);
+        ctx.fillText(MyWeather.temp + "°C", cWidth - 30*cWidth/100, 90);
     }else{
+        ctx.fillText(Clock.getTime(), cWidth - 12*cWidth/100, 30);
         ctx.fillText("best score : " + best, cWidth - 10*cWidth/100, 50);
-        ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 10*cWidth/100, 80);
+        ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 10*cWidth/100, 70);
+        ctx.fillText(MyWeather.temp + "°C", cWidth - 10*cWidth/100, 90);
     }
     
 
@@ -247,7 +251,8 @@ function updateDayP(){
             if(document.getElementById('sun').getAttribute('class').includes('d-none')){
                 document.getElementById('sun').classList.toggle("d-none")
             }
-        }else{
+        }
+        if(weather.includes('rain')){
             if(document.getElementById('cloud').getAttribute('class').includes('d-none')){
                 document.getElementById('cloud').classList.toggle("d-none")
             }
@@ -317,7 +322,7 @@ function stopPeriodWatcher(){
 
 function handleWeather(){
     // weather management
-if(weather.localeCompare("rain", undefined, { sensitivity: 'base' }) == 0){
+if(weather.includes("rain")){
     // console.log({a:document.getElementById('snow').innerHTML});
     if(!document.getElementById('snow').innerHTML.includes("<")){
         let inner = `
@@ -404,7 +409,7 @@ let keys = {};
 let interval = null;
 let isRunning = false;
 
-let weather = 'rain';
+let weather = 'rain,sun';
 let period;
 
 let initialSpawTimer = 180;
@@ -465,4 +470,3 @@ let song = new Audio('./docs/assets/sounds/som_1.mp3');
 song.loop = true;
 let gameOverSong = new Audio('./docs/assets/sounds/game-over.wav');
 let levelUpSong = new Audio('./docs/assets/sounds/level-up.mp3');
-
