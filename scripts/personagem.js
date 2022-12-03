@@ -64,6 +64,7 @@ class Player {
         // bend move of the s or thre arrow down key is pressed
         if (keys["KeyS"] || keys["ArrowDown"]) {
             this.height = this.height_c - this.height_c * (20 / 100);
+            this.y = (this.y  + 1) < (cHeight - this.height)?(this.y  + 1):(cHeight - this.height);
         } else {
             this.height = this.height_c;
         };
@@ -86,11 +87,11 @@ class Player {
         let sg = new Audio('./docs/assets/sounds/jump-sound.mp3');
         sg.play();
         if (this.grounded && this.jumpTimer === 0) {
-            this.jumpTimer = 2;
-            this.speedY = -this.jumpForce;
+            this.jumpTimer = 1;
+            this.speedY = -this.jumpForce * (3/2);
         } else if (this.jumpTimer > 0 && this.jumpTimer < 10) {
             this.jumpTimer++;
-            this.speedY = -this.jumpForce - this.jumpTimer / 50;
+            this.speedY = -this.jumpForce * (3/2);
         };
     };
 

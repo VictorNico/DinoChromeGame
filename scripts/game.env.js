@@ -58,6 +58,9 @@ function update() {
     // scoring
     players[players.length - 1].end = new Date();
     players[players.length - 1].score = end(players[players.length - 1].start, players[players.length - 1].end);
+    if(players[players.length - 1].score % 10 == 0){
+        levelUpSong.play();
+    }
     /* if (keys["Space"]) { */
     frames++;
     //console.log(frames);
@@ -84,6 +87,7 @@ function update() {
     ctx.fillText("" + window.atob(localStorage.getItem("lastname")), 0, 50);
     let best = Object.keys(bestP).length !== 0 ? bestP.score : players[players.length - 1].score;
     let current = players[players.length - 1];
+    let Clock = new clocks();
     if(window.mobileCheck() == true){
         ctx.fillText("best score : " + best, cWidth - 30*cWidth/100, 50);
         ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 30*cWidth/100, 80);
@@ -171,6 +175,7 @@ function update() {
             // canvas.classList.remove('second-background')
             gameOverScreen.classList.toggle('d-none')
             // bgTVScreen.classList.toggle('d-none')
+            gameOverSong.play();
         };
         // update obstacle
         demon.update();
@@ -212,49 +217,173 @@ function updatePeriod(){
 
     if(hour < 18){
         period = 'd';
-        if(isRunning)
-        {
-            if(!document.getElementById('moon').getAttribute('class').includes('d-none')){
-                document.getElementById('moon').classList.toggle("d-none")
-            }
-            if(document.getElementById('sun').getAttribute('class').includes('d-none')){
-                document.getElementById('sun').classList.toggle("d-none")
-            }
-            if(!document.getElementById('body').getAttribute('class').includes('bg-light text-dark')){
-                document.getElementById("body").setAttribute("class", "bg-light text-dark");
-            }
-        }else{
-            document.getElementById("body").setAttribute("class", "bg-dark text-white");
-        }
+        updateDayP();
+        
         
     }else{
         period = 'n';
-        if(isRunning)
-        {
-            if(!document.getElementById('sun').getAttribute('class').includes('d-none')){
-                document.getElementById('sun').classList.toggle("d-none")
-            }
-            if(document.getElementById('moon').getAttribute('class').includes('d-none')){
-                document.getElementById('moon').classList.toggle("d-none")
-            }
-            if(!document.getElementById('body').getAttribute('class').includes('bg-dark text-white')){
-                document.getElementById("body").setAttribute("class", "bg-dark text-white");
-            }
-        }
-        else{
-            document.getElementById("body").setAttribute("class", "bg-dark text-white");
-        }
+        updateNightP();
     }
 
 
 }
+function PeriodUserConf(){
+    if(period.includes('d')){
+        updateDayP();
+    }else{
+        updateNightP();
+    }
 
+}
+function updateDayP(){
+    if(isRunning)
+    {
+        if(!document.getElementById('moon').getAttribute('class').includes('d-none')){
+            document.getElementById('moon').classList.toggle("d-none")
+        }
+        if(weather.includes('sun'))
+        {
+            handleWeather();
+            if(document.getElementById('sun').getAttribute('class').includes('d-none')){
+                document.getElementById('sun').classList.toggle("d-none")
+            }
+        }else{
+            if(document.getElementById('cloud').getAttribute('class').includes('d-none')){
+                document.getElementById('cloud').classList.toggle("d-none")
+            }
+        }
+        if(!document.getElementById('body').getAttribute('class').includes('bg-info text-dark')){
+            document.getElementById("body").setAttribute("class", "bg-info text-dark");
+        }
+    }else{
+        document.getElementById("body").setAttribute("class", "bg-dark text-white");
+        if(!document.getElementById('cloud').getAttribute('class').includes('d-none')){
+            document.getElementById('cloud').classList.toggle("d-none")
+        }
+        if(!document.getElementById('sun').getAttribute('class').includes('d-none')){
+            document.getElementById('sun').classList.toggle("d-none")
+        }
+    }
+}
 
+function updateNightP(){
+    if(isRunning)
+    {
+        if(weather.includes('rain'))
+        {
+            if(document.getElementById('cloud').getAttribute('class').includes('d-none')){
+                document.getElementById('cloud').classList.toggle("d-none")
+            }
+        }
+        else{
+            handleWeather();
+        }
+        if(!document.getElementById('sun').getAttribute('class').includes('d-none')){
+            document.getElementById('sun').classList.toggle("d-none")
+        }
+        if(document.getElementById('moon').getAttribute('class').includes('d-none')){
+            document.getElementById('moon').classList.toggle("d-none")
+        }
+        if(!document.getElementById('body').getAttribute('class').includes('bg-dark text-white')){
+            document.getElementById("body").setAttribute("class", "bg-dark text-white");
+        }
+    }
+    else{
+        document.getElementById("body").setAttribute("class", "bg-dark text-white");
+        if(!document.getElementById('cloud').getAttribute('class').includes('d-none')){
+            document.getElementById('cloud').classList.toggle("d-none")
+        }
+        if(!document.getElementById('moon').getAttribute('class').includes('d-none')){
+            document.getElementById('moon').classList.toggle("d-none")
+        }
+    }
+}
 
+function clearParties(){
+    localStorage.removeItem('listP');
+}
+
+function startPeriodWatcher(){
+    PeriodWatch = setInterval(updatePeriod, 1000 / 60);
+}
+
+function startPeriodWatcherU(){
+    PeriodWatch = setInterval(PeriodUserConf, 1000 / 60);
+}
+
+function stopPeriodWatcher(){
+    clearInterval(PeriodWatch);
+}
+
+function handleWeather(){
+    // weather management
+if(weather.localeCompare("rain", undefined, { sensitivity: 'base' }) == 0){
+    // console.log({a:document.getElementById('snow').innerHTML});
+    if(!document.getElementById('snow').innerHTML.includes("<")){
+        let inner = `
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+             `
+             document.getElementById('snow').innerHTML = inner;
+             // console.log({inner})
+        }
+    }else{
+        document.getElementById('snow').innerHTML = "";
+    }
+}
 
 // variables 
 
-
+let PeriodWatch;
 let cWidth;
 let cHeight;
 let canvas = null;
@@ -329,72 +458,11 @@ let MyWeather = {
     "wind_spd": 6.0323224
 }
 
-// weather management
-if(weather.localeCompare("rain", undefined, { sensitivity: 'base' }) == 0){
-    // console.log({a:document.getElementById('snow').innerHTML});
-    if(!document.getElementById('snow').innerHTML.includes("<")){
-        let inner = `
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-        <div class="snowflake"></div>
-         `
-         document.getElementById('snow').innerHTML = inner;
-         // console.log({inner})
-    }
-}else{
-    document.getElementById('snow').innerHTML = "";
-}
+handleWeather()
 
 
 let song = new Audio('./docs/assets/sounds/som_1.mp3');
 song.loop = true;
-
+let gameOverSong = new Audio('./docs/assets/sounds/game-over.wav');
+let levelUpSong = new Audio('./docs/assets/sounds/level-up.mp3');
 

@@ -16,11 +16,13 @@ images = [
 ]
 
 // listeners
-
-titleButton.onclick = () => {
+saveButton.onclick = () => {
     event.preventDefault();
     gameSpeed = document.getElementById('validationDefault01').value;
-    gameSpeed = document.getElementById('validationDefault01').value;
+    period = document.getElementById('validationDefault03').value;
+    weather = document.getElementById('validationDefault02').value;
+    stopPeriodWatcher();
+    startPeriodWatcherU();
 
 }
 
@@ -71,4 +73,4 @@ restartButton.onclick = () => {
 
 
 // watch period
-setInterval(updatePeriod, 1000 / 60);
+startPeriodWatcher();
