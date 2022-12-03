@@ -69,3 +69,6 @@ restartButton.onclick = () => {
     titleScreen.classList.toggle('d-none');
 };
 
+
+// watch period
+setInterval(updatePeriod, 1000 / 60);

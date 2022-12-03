@@ -1,22 +1,14 @@
-.clearSky {
-    background-color: #80BDE3;
-    color: black;
+@keyframes octocat-wave {
+    0%, 100% { transform: rotate(0) }
+    20%, 60% { transform: rotate(-25deg) }
+    40%, 80% { transform: rotate(10deg) }
 }
 
-.hidden {
-    display: none;
+.sun-corner:hover .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
 }
-.table-fixed {
-  width: 100%;
-}
-.table-fixed tbody {
-  height: 200px;
-  overflow-y: auto;
-  width: 100%;
-}
-.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
-  display: block;
-}
+
+
 
 
 /*adding rain img and making opacity 0*/

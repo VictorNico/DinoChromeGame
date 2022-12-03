@@ -29,7 +29,7 @@ class Obstacle {
     };
 
     update() {
-        this.x += this.speedX+0.0002;
+        this.x += this.speedX;
         this.demonDraw();
         this.speedX = -gameSpeed;
     };

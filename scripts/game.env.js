@@ -53,6 +53,8 @@ function start() {
 
 // function to update the t-rex and the pterodactyles, cactus obstacles
 function update() {
+
+
     // scoring
     players[players.length - 1].end = new Date();
     players[players.length - 1].score = end(players[players.length - 1].start, players[players.length - 1].end);
@@ -61,7 +63,11 @@ function update() {
     //console.log(frames);
     ctx.clearRect(0, 0, cWidth, cHeight);
     // add the pseudo name
-    ctx.fillStyle = "white";
+    if(period.includes('n')){
+        ctx.fillStyle = "white";
+    }else{
+        ctx.fillStyle = "black";
+    }
 //     var background = new Image();
 // background.src = "../docs/assets/images/ground.png";
 
@@ -199,6 +205,52 @@ function format(d){
 }
 
 
+// update period method
+function updatePeriod(){
+    let date = new Date();
+    let hour = date.getHours();
+
+    if(hour < 18){
+        period = 'd';
+        if(isRunning)
+        {
+            if(!document.getElementById('moon').getAttribute('class').includes('d-none')){
+                document.getElementById('moon').classList.toggle("d-none")
+            }
+            if(document.getElementById('sun').getAttribute('class').includes('d-none')){
+                document.getElementById('sun').classList.toggle("d-none")
+            }
+            if(!document.getElementById('body').getAttribute('class').includes('bg-light text-dark')){
+                document.getElementById("body").setAttribute("class", "bg-light text-dark");
+            }
+        }else{
+            document.getElementById("body").setAttribute("class", "bg-dark text-white");
+        }
+        
+    }else{
+        period = 'n';
+        if(isRunning)
+        {
+            if(!document.getElementById('sun').getAttribute('class').includes('d-none')){
+                document.getElementById('sun').classList.toggle("d-none")
+            }
+            if(document.getElementById('moon').getAttribute('class').includes('d-none')){
+                document.getElementById('moon').classList.toggle("d-none")
+            }
+            if(!document.getElementById('body').getAttribute('class').includes('bg-dark text-white')){
+                document.getElementById("body").setAttribute("class", "bg-dark text-white");
+            }
+        }
+        else{
+            document.getElementById("body").setAttribute("class", "bg-dark text-white");
+        }
+    }
+
+
+}
+
+
+
 
 // variables 
 
@@ -223,13 +275,123 @@ let keys = {};
 let interval = null;
 let isRunning = false;
 
-let weather;
+let weather = 'rain';
 let period;
 
 let initialSpawTimer = 180;
 let spawnTimer = initialSpawTimer;
 
-let MyWeather = new Weather()
+// let MyWeather = new Weather()
+let MyWeather = {
+    "app_temp": 24.8,
+    "aqi": 15,
+    "city_name": "Takoradi",
+    "clouds": 88,
+    "country_code": "GH",
+    "datetime": "2022-12-03:09",
+    "dewpt": 22.1,
+    "dhi": 209.55,
+    "dni": 645.76,
+    "elev_angle": 43.07,
+    "ghi": 587.35,
+    "gust": 6,
+    "h_angle": -30,
+    "lat": 0,
+    "lon": 0,
+    "ob_time": "2022-12-03 09:22",
+    "pod": "d",
+    "precip": 0.7466421,
+    "pres": 1010.5,
+    "rh": 89,
+    "slp": 1010.5,
+    "snow": 0,
+    "solar_rad": 275.5,
+    "sources": [
+        "analysis"
+    ],
+    "state_code": "09",
+    "station": "D7059",
+    "sunrise": "05:47",
+    "sunset": "17:52",
+    "temp": 24,
+    "timezone": "Africa/Accra",
+    "ts": 1670059330,
+    "uv": 1.9880596,
+    "vis": 16,
+    "weather": {
+        "description": "Drizzle",
+        "code": 301,
+        "icon": "d02d"
+    },
+    "wind_cdir": "NW",
+    "wind_cdir_full": "northwest",
+    "wind_dir": 321,
+    "wind_spd": 6.0323224
+}
+
+// weather management
+if(weather.localeCompare("rain", undefined, { sensitivity: 'base' }) == 0){
+    // console.log({a:document.getElementById('snow').innerHTML});
+    if(!document.getElementById('snow').innerHTML.includes("<")){
+        let inner = `
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+        <div class="snowflake"></div>
+         `
+         document.getElementById('snow').innerHTML = inner;
+         // console.log({inner})
+    }
+}else{
+    document.getElementById('snow').innerHTML = "";
+}
 
 
 let song = new Audio('./docs/assets/sounds/som_1.mp3');
