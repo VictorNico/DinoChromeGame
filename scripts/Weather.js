@@ -149,7 +149,6 @@ class Weather {
     }
 
     getDecisionWeather() {
-        console.log(this);
         if (this.rain.includes(this.currentWeather.weather.code)) { return "rain"; } 
         else if (this.drizzle.includes(this.currentWeather.weather.code)) { return "sun"; } 
         else if (this.snow.includes(this.currentWeather.weather.code)) { return "rain"; } 
