@@ -73,11 +73,12 @@ class Weather {
             that.currentWeather = response.data.data[0];
             weather = that.getDecisionWeather();
             period = that.getDecisionPeriod();
+            // console.log({weather,period})
             document.getElementById('validationDefault02').value = weather;
             document.getElementById('validationDefault03').value = period;
-            if(weather.localeCompare("rain")){
-                console.log(document.getElementById('snow').innerHTML);
-                if(document.getElementById('snow').innerHTML.localeCompare("")){
+            if(weather.localeCompare("rain", undefined, { sensitivity: 'base' }) == 0){
+                // console.log({a:document.getElementById('snow').innerHTML});
+                if(!document.getElementById('snow').innerHTML.includes("<")){
                     let inner = `
                     <div class="snowflake"></div>
                     <div class="snowflake"></div>
@@ -132,11 +133,12 @@ class Weather {
                     <div class="snowflake"></div>
                      `
                      document.getElementById('snow').innerHTML = inner;
+                     // console.log({inner})
                 }
             }else{
                 document.getElementById('snow').innerHTML = "";
             }
-            console.log(response.data);
+            // console.log(response.data);
         }).catch(function(error) {
             console.error(error);
         });

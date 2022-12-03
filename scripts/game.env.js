@@ -229,7 +229,7 @@ let period;
 let initialSpawTimer = 180;
 let spawnTimer = initialSpawTimer;
 
-// let MyWeather = new Weather()
+let MyWeather = new Weather()
 
 
 let song = new Audio('./docs/assets/sounds/som_1.mp3');

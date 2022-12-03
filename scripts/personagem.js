@@ -86,7 +86,7 @@ class Player {
         let sg = new Audio('./docs/assets/sounds/jump-sound.mp3');
         sg.play();
         if (this.grounded && this.jumpTimer === 0) {
-            this.jumpTimer = 1;
+            this.jumpTimer = 2;
             this.speedY = -this.jumpForce;
         } else if (this.jumpTimer > 0 && this.jumpTimer < 10) {
             this.jumpTimer++;
