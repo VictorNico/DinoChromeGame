@@ -238,10 +238,13 @@
                                     </form>
 
                                     <div class="row g-2 mt-1">
-                                        <div class="col-md-6">
-                                            <button class="btn btn-info" type="submit" id="reloadP">reload period Watcher</button>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-info" id="reloadP">reload period Watcher</button>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
+                                            <button class="btn btn-danger" id="clearL">Del Parties</button>
+                                        </div>
+                                        <div class="col-md-4">
                                             <div class="form-check form-check-inline">
                                               <input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked>
                                               <label class="form-check-label" for="inlineCheckbox1">
@@ -272,7 +275,7 @@
               <button type="button" id ="cls1" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body fs-5 text-primary">
-              Saved.
+              Saved!!
             </div>
           </div>
           <div id="liveToast1" class="toast bg-dark d-none" role="alert" aria-live="assertive" aria-atomic="true">
@@ -284,6 +287,28 @@
             </div>
             <div class="toast-body fs-5 text-primary">
               please fullfil the form!!
+            </div>
+          </div>
+          <div id="liveToast2" class="toast bg-dark d-none" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-primary">
+              <img src="./docs/assets/favicon_package_v0/first.ico" class="rounded me-2" alt="...">
+              <strong class="me-auto fs-3 text-white">T-REX Game</strong>
+              <small>just now</small>
+              <button type="button" id ="cls3" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body fs-5 text-primary">
+              List deleted!!
+            </div>
+          </div>
+          <div id="liveToast3" class="toast bg-dark d-none" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-primary">
+              <img src="./docs/assets/favicon_package_v0/first.ico" class="rounded me-2" alt="...">
+              <strong class="me-auto fs-3 text-white">T-REX Game</strong>
+              <small>just now</small>
+              <button type="button" id ="cls4" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body fs-5 text-primary">
+              The Weather API has been reactived!!
             </div>
           </div>
         </div>

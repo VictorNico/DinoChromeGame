@@ -8,6 +8,7 @@ const saveButton = document.getElementById('save');
 const titleButton = document.getElementById('title-button-start');
 const restartButton = document.getElementById('restart-button');
 const reloadButton = document.getElementById('reloadP');
+const clearButton = document.getElementById('clearL');
 const soundChecker = document.getElementById('inlineCheckbox1');
 
 
@@ -50,16 +51,34 @@ document.getElementById('cls1').onclick =()=>{
 document.getElementById('cls2').onclick =()=>{
     document.getElementById('liveToast1').classList.toggle('d-none');
 }
+document.getElementById('cls4').onclick =()=>{
+    document.getElementById('liveToast3').classList.toggle('d-none');
+}
+document.getElementById('cls3').onclick =()=>{
+    document.getElementById('liveToast2').classList.toggle('d-none');
+}
 
 reloadButton.onclick = () => {
-    event.preventDefault();
     stopPeriodWatcher();
     startPeriodWatcher();
+    let toastLiveExample = document.getElementById('liveToast3')
+    toastLiveExample.classList.toggle('d-none');
+    let toast = new bootstrap.Toast(toastLiveExample)
+
+    toast.show();
+
+}
+clearButton.onclick = () => {
+    clearParties();
+    let toastLiveExample = document.getElementById('liveToast2')
+    toastLiveExample.classList.toggle('d-none');
+    let toast = new bootstrap.Toast(toastLiveExample)
+
+    toast.show();
 
 }
 
 soundChecker.onchange = () => {
-    event.preventDefault();
     if(soundChecker.checked){
         song.play();
     }

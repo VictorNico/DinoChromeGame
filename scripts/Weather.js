@@ -163,6 +163,6 @@ class Weather {
     }
 
     getDecisionPeriod(){
-        return this.currentWeather.pod == 'n'?'nuit':'jour';
+        return this.currentWeather.pod;
     }
 }
