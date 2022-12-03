@@ -415,53 +415,53 @@ let period;
 let initialSpawTimer = 180;
 let spawnTimer = initialSpawTimer;
 
-// let MyWeather = new Weather()
-let MyWeather = {
-    "app_temp": 24.8,
-    "aqi": 15,
-    "city_name": "Takoradi",
-    "clouds": 88,
-    "country_code": "GH",
-    "datetime": "2022-12-03:09",
-    "dewpt": 22.1,
-    "dhi": 209.55,
-    "dni": 645.76,
-    "elev_angle": 43.07,
-    "ghi": 587.35,
-    "gust": 6,
-    "h_angle": -30,
-    "lat": 0,
-    "lon": 0,
-    "ob_time": "2022-12-03 09:22",
-    "pod": "d",
-    "precip": 0.7466421,
-    "pres": 1010.5,
-    "rh": 89,
-    "slp": 1010.5,
-    "snow": 0,
-    "solar_rad": 275.5,
-    "sources": [
-        "analysis"
-    ],
-    "state_code": "09",
-    "station": "D7059",
-    "sunrise": "05:47",
-    "sunset": "17:52",
-    "temp": 24,
-    "timezone": "Africa/Accra",
-    "ts": 1670059330,
-    "uv": 1.9880596,
-    "vis": 16,
-    "weather": {
-        "description": "Drizzle",
-        "code": 301,
-        "icon": "d02d"
-    },
-    "wind_cdir": "NW",
-    "wind_cdir_full": "northwest",
-    "wind_dir": 321,
-    "wind_spd": 6.0323224
-}
+let MyWeather = new Weather()
+// let MyWeather = {
+//     "app_temp": 24.8,
+//     "aqi": 15,
+//     "city_name": "Takoradi",
+//     "clouds": 88,
+//     "country_code": "GH",
+//     "datetime": "2022-12-03:09",
+//     "dewpt": 22.1,
+//     "dhi": 209.55,
+//     "dni": 645.76,
+//     "elev_angle": 43.07,
+//     "ghi": 587.35,
+//     "gust": 6,
+//     "h_angle": -30,
+//     "lat": 0,
+//     "lon": 0,
+//     "ob_time": "2022-12-03 09:22",
+//     "pod": "d",
+//     "precip": 0.7466421,
+//     "pres": 1010.5,
+//     "rh": 89,
+//     "slp": 1010.5,
+//     "snow": 0,
+//     "solar_rad": 275.5,
+//     "sources": [
+//         "analysis"
+//     ],
+//     "state_code": "09",
+//     "station": "D7059",
+//     "sunrise": "05:47",
+//     "sunset": "17:52",
+//     "temp": 24,
+//     "timezone": "Africa/Accra",
+//     "ts": 1670059330,
+//     "uv": 1.9880596,
+//     "vis": 16,
+//     "weather": {
+//         "description": "Drizzle",
+//         "code": 301,
+//         "icon": "d02d"
+//     },
+//     "wind_cdir": "NW",
+//     "wind_cdir_full": "northwest",
+//     "wind_dir": 321,
+//     "wind_spd": 6.0323224
+// }
 
 handleWeather()
 
