@@ -25,7 +25,8 @@ class Player {
         img4.src = "./docs/assets/images/player_frames_img/dino-stationary.png";
 
         this.img = img1;
-        this.images = [img1, img2, img3, img4]
+        this.images = [img1, img2, img3, img4];
+        this.jumpSound = new Audio('./docs/assets/sounds/jump-sound.mp3');
     };
 
     left() {
@@ -84,8 +85,8 @@ class Player {
 
     // jump function
     jump() {
-        let sg = new Audio('./docs/assets/sounds/jump-sound.mp3');
-        sg.play();
+        this.jumpSound.currentTime = 0;
+        this.jumpSound.play();
         if (this.grounded && this.jumpTimer === 0) {
             this.jumpTimer = 1;
             this.speedY = -this.jumpForce * (3/2);
@@ -104,8 +105,39 @@ class Player {
 
 document.addEventListener('keydown', (e) => {
     keys[e.code] = true;
+    if (e.code === 'Space' && isRunning) {
+        isPaused = !isPaused;
+        if (isPaused) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.35)';
+            ctx.fillRect(0, 0, cWidth, cHeight);
+            ctx.fillStyle = period && period.includes('n') ? 'white' : 'black';
+            ctx.font = "5vh Arial";
+            ctx.textAlign = "center";
+            ctx.fillText("PAUSED", cWidth / 2, cHeight / 2 - 20);
+            ctx.font = "2.5vh Arial";
+            ctx.fillText("press Space to resume", cWidth / 2, cHeight / 2 + 20);
+            ctx.textAlign = "left";
+            ctx.font = "2vh Arial";
+        }
+    }
 });
 
 document.addEventListener('keyup', (e) => {
     keys[e.code] = e.code == "Space" ? true : false;
+});
+
+document.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const touchY = e.touches[0].clientY;
+    const screenH = window.screen.height;
+    if (touchY > screenH * 0.6) {
+        keys["ArrowDown"] = true;
+    } else {
+        keys["ArrowUp"] = true;
+    }
+}, { passive: false });
+
+document.addEventListener('touchend', () => {
+    keys["ArrowUp"] = false;
+    keys["ArrowDown"] = false;
 });

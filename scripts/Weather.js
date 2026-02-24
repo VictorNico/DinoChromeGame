@@ -33,112 +33,27 @@ class Weather {
      *          sun else
      */
     async getCurrentWeather() {
-        /**
-         * raining code are:
-         * 200,201,202,500,501,502,511,520,521,522,
-         * drizzle code are:
-         * 230,231,232,300,301,302,
-         * hail code are:
-         * 233,
-         * snow code are :
-         * 600, 601,602,610, 
-         * Clear sky code:
-         * 800
-         * Few clouds ode:
-         * 801
-         * Scattered clouds:
-         * 802
-         * Broken clouds:
-         * 803
-         * Overcast clouds:
-         * 804
-         * Unknown Precipitation:
-         * 900
-         */
         let that = this;
-        const options = {
+        const url = new URL('https://weatherbit-v1-mashape.p.rapidapi.com/current');
+        url.searchParams.set('lon', this.gps.getLon());
+        url.searchParams.set('lat', this.gps.getLat());
+
+        await fetch(url, {
             method: 'GET',
-            url: 'https://weatherbit-v1-mashape.p.rapidapi.com/current',
-            params: {
-                lon: `${this.gps.getLon()}`,
-                lat: `${this.gps.getLat()}`
-            },
             headers: {
                 'X-RapidAPI-Key': window.atob("NjM4MjNmY2ZiOG1zaGE0ZGM5OTYwZGFmZTFlNHAxYzlhMDRqc25hZDY4MzZmMjZiNjI="),
                 'X-RapidAPI-Host': 'weatherbit-v1-mashape.p.rapidapi.com'
             }
-        };
-
-        await axios.request(options).then(function(response) {
-            that.currentWeather = response.data.data[0];
+        }).then(function(response) {
+            return response.json();
+        }).then(function(data) {
+            that.currentWeather = data.data[0];
             weather = that.getDecisionWeather();
             period = that.getDecisionPeriod();
             // console.log({weather,period})
             document.getElementById('validationDefault02').value = weather;
             document.getElementById('validationDefault03').value = period;
-            if(weather.localeCompare("rain", undefined, { sensitivity: 'base' }) == 0){
-                // console.log({a:document.getElementById('snow').innerHTML});
-                if(!document.getElementById('snow').innerHTML.includes("<")){
-                    let inner = `
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                    <div class="snowflake"></div>
-                     `
-                     document.getElementById('snow').innerHTML = inner;
-                     // console.log({inner})
-                }
-            }else{
-                document.getElementById('snow').innerHTML = "";
-            }
-            // console.log(response.data);
+            setSnowflakes(weather.includes("rain"));
         }).catch(function(error) {
             console.error(error);
         });

@@ -2,12 +2,8 @@
 // methods
 function drawCanvas(parent, id) {
     let canvas = document.createElement('canvas');
-    div = document.getElementById(parent);
+    const div = document.getElementById(parent);
     canvas.id = id;
-    // if(window.mobileCheck() == true){
-    //     canvas.width = window.screen.width;
-    //     canvas.height = window.screen.height;
-    // }else{
     if(window.mobileCheck() == true){
         canvas.width = window.screen.width;
         canvas.height = window.screen.height - 8*window.screen.height/100;
@@ -15,9 +11,7 @@ function drawCanvas(parent, id) {
         canvas.width = window.screen.width;
         canvas.height = window.screen.height - 12*window.screen.height/100;
     }
-    // }
-    
-    div.appendChild(canvas)
+    div.appendChild(canvas);
 }
 
 window.mobileCheck = function() {
@@ -27,33 +21,41 @@ window.mobileCheck = function() {
 };
 
 
-// function to draw the scene
-function start() {
+const FRAME_DURATION = 1000 / 60;
 
-    // define the default game parameters
+function gameLoop(timestamp) {
+    const elapsed = timestamp - lastTime;
+    if (elapsed >= FRAME_DURATION) {
+        lastTime = timestamp - (elapsed % FRAME_DURATION);
+        update();
+    }
+    interval = requestAnimationFrame(gameLoop);
+}
+
+// Start the game
+function start() {
     gameSpeed = 5;
     gravity = 0.9;
-    // add interval listening
-    interval = setInterval(update, 1000 / 60);
-    // add interval speed update
+    lastTime = 0;
+    interval = requestAnimationFrame(gameLoop);
     myVar = setInterval(function(){
-        // update game 
         gameSpeed += 0.1;
     }, 15000);
     isRunning = true;
-    // instanciate the t-rex player
+    isPaused = false;
     if(window.mobileCheck() == true){
         player = new Player(0, 0, 50, 100);
     }else{
         player = new Player(125, 0, 50, 100);
     }
     player.playerDraw(frames);
-};
+}
 
 
-// function to update the t-rex and the pterodactyles, cactus obstacles
+// Main game loop — 60 fps
 function update() {
 
+    if (isPaused) return;
 
     // scoring
     players[players.length - 1].end = new Date();
@@ -61,412 +63,141 @@ function update() {
     if(players[players.length - 1].score % 10 == 0){
         levelUpSong.play();
     }
-    /* if (keys["Space"]) { */
-    frames++;
-    //console.log(frames);
-    ctx.clearRect(0, 0, cWidth, cHeight);
-    // add the pseudo name
-    if(period.includes('n')){
-        ctx.fillStyle = "white";
-    }else{
-        ctx.fillStyle = "black";
-    }
-//     var background = new Image();
-// background.src = "../docs/assets/images/ground.png";
 
-// // Make sure the image is loaded first otherwise nothing will draw.
-// background.onload = function(){
-//     ctx.drawImage(background,0,0);   
-// }
-    if(window.mobileCheck() == true){
-        ctx.font = "2vh Arial";
-    }else{
-        ctx.font = "2vh Arial";
-    }
-    
-    ctx.fillText("" + window.atob(localStorage.getItem("lastname")), 0, 50);
-    let best = Object.keys(bestP).length !== 0 ? bestP.score : players[players.length - 1].score;
-    let current = players[players.length - 1];
-    let Clock = new clocks();
+    frames++;
+    ctx.clearRect(0, 0, cWidth, cHeight);
+
+    // HUD text color
+    ctx.fillStyle = period && period.includes('n') ? "white" : "black";
+    ctx.font = "2vh Arial";
+
+    ctx.fillText("" + window.atob(localStorage.getItem("lastname")), 0, 50);
+
+    const best = Object.keys(bestP).length !== 0 ? bestP.score : players[players.length - 1].score;
+    const current = players[players.length - 1];
+    const Clock = new clocks();
+    const level = Math.max(1, Math.floor(gameSpeed - 4));
+    const temp = MyWeather.currentWeather ? MyWeather.currentWeather.temp + "°C" : "--°C";
+
     if(window.mobileCheck() == true){
         ctx.fillText(Clock.getTime(), cWidth - 32*cWidth/100, 30);
         ctx.fillText("best score : " + best, cWidth - 30*cWidth/100, 50);
         ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 30*cWidth/100, 70);
-        ctx.fillText(MyWeather.temp + "°C", cWidth - 30*cWidth/100, 90);
+        ctx.fillText(temp, cWidth - 30*cWidth/100, 90);
+        ctx.fillText("level : " + level, cWidth - 30*cWidth/100, 110);
     }else{
         ctx.fillText(Clock.getTime(), cWidth - 12*cWidth/100, 30);
         ctx.fillText("best score : " + best, cWidth - 10*cWidth/100, 50);
         ctx.fillText("your score : " + players[players.length - 1].score, cWidth - 10*cWidth/100, 70);
-        ctx.fillText(MyWeather.temp + "°C", cWidth - 10*cWidth/100, 90);
+        ctx.fillText(temp, cWidth - 10*cWidth/100, 90);
+        ctx.fillText("level : " + level, cWidth - 10*cWidth/100, 110);
     }
-    
+
+    // draw ground line
+    ctx.strokeStyle = period && period.includes('n') ? 'white' : 'black';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, cHeight - 1);
+    ctx.lineTo(cWidth, cHeight - 1);
+    ctx.stroke();
 
     spawnTimer--;
     if (spawnTimer <= 0) {
         spawnObstacle();
         spawnTimer = initialSpawTimer - gameSpeed * 5500;
-
         if (spawnTimer < 60) {
             spawnTimer = 60;
-        };
-    };
+        }
+    }
 
     for (let i = 0; i < obstacles.length; i++) {
-        let demon = obstacles[i];
+        const demon = obstacles[i];
         if (demon.x + demon.width < 0) {
             obstacles.splice(i, 1);
-        };
+        }
 
         if (player.colision(demon)) {
 
-            // sort the players by scores
+            // sort players by score
             players.sort(function(a, b) {
                 if (a.score < b.score) return 1;
                 if (a.score > b.score) return -1;
                 return 0;
             });
 
-
-            // compute top 10 list
+            // build top-10 list
             let liste = "";
-            let taille = players.length > 9 ? 10 : players.length;
-            for (let i = 0;  i < taille; i++) {
-                let template = `
-                    <tr>
-                        <th scope="row">${i+1}</th>
-                        <td>${players[i].name}</td>
-                        <td>${players[i].score}</td>
-                        <td>${format(players[i].end)}</td>
-                    </tr>
-                 `
-                liste += template;
+            const taille10 = players.length > 9 ? 10 : players.length;
+            for (let i = 0; i < taille10; i++) {
+                liste += `<tr>
+                    <th scope="row">${i+1}</th>
+                    <td>${players[i].name}</td>
+                    <td>${players[i].score}</td>
+                    <td>${format(players[i].end)}</td>
+                </tr>`;
             }
-            // set the top 10 list
             document.getElementById('top10').innerHTML = liste;
 
-            //compute score list
+            // build full score list
             liste = "";
-            taille = players.length;
-            for (let i = 0;  i < taille; i++) {
-                let template = `
-                    <tr>
-                        <th scope="row">${i+1}</th>
-                        <td>${players[i].name}</td>
-                        <td>${players[i].score}</td>
-                        <td>${format(players[i].end)}</td>
-                    </tr>
-                 `
-                liste += template;
+            for (let i = 0; i < players.length; i++) {
+                liste += `<tr>
+                    <th scope="row">${i+1}</th>
+                    <td>${players[i].name}</td>
+                    <td>${players[i].score}</td>
+                    <td>${format(players[i].end)}</td>
+                </tr>`;
             }
             document.getElementById('scoreL').innerHTML = liste;
             document.getElementById('score').innerHTML = current.score;
             document.getElementById('score1').innerHTML = current.score;
             document.getElementById('scoreb').innerHTML = players[0].score;
             document.getElementById('currentDate').innerHTML = format(current.end);
-            // completelist.innerHTML = liste;
+
             localStorage.setItem("listP", window.btoa(JSON.stringify(Object.assign({}, players))));
 
             obstacles = [];
-            clearInterval(interval);
+            cancelAnimationFrame(interval);
             clearInterval(myVar);
             isRunning = false;
-            spawnTimer;
+            isPaused = false;
+            spawnTimer = initialSpawTimer;
             gameSpeed = 5;
-            canvas.classList.toggle('d-none')
-            canvas1.classList.toggle('d-none');
             document.getElementById('canvasP').innerHTML = "";
-            // canvas.classList.remove('first-background')
-            // canvas.classList.remove('second-background')
-            gameOverScreen.classList.toggle('d-none')
-            // bgTVScreen.classList.toggle('d-none')
+            gameOverScreen.classList.toggle('d-none');
             gameOverSong.play();
-        };
-        // update obstacle
+            return;
+        }
+
         demon.update();
-    };
+    }
 
     player.animate();
     player.playerDraw(frames);
-};
-// compute score
+}
+
+// Score = elapsed seconds
 function end(startTime, endTime) {
-    let timeDiff = endTime - startTime; //in ms
-    // strip the ms
-    timeDiff /= 1000;
-
-    // get seconds 
-    let seconds = Math.round(timeDiff);
-    /* console.log(seconds + " seconds"); */
-    return seconds;
+    return Math.round((endTime - startTime) / 1000);
 }
 
-function format(d){
-    let date = new Date(d);
-    return date.toLocaleDateString("en-US", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            minutes: "2-digit",
-            hour: "2-digit",
-            hour12: true,
-        });
+function format(d) {
+    return new Date(d).toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        hour12: true,
+    });
 }
 
-
-// update period method
-function updatePeriod(){
-    let date = new Date();
-    let hour = date.getHours();
-
-    if(hour < 18){
-        period = 'd';
-        updateDayP();
-        
-        
-    }else{
-        period = 'n';
-        updateNightP();
-    }
-
-
-}
-function PeriodUserConf(){
-    if(period.includes('d')){
-        updateDayP();
-    }else{
-        updateNightP();
-    }
-
-}
-function updateDayP(){
-    if(isRunning)
-    {
-        if(!document.getElementById('moon').getAttribute('class').includes('d-none')){
-            document.getElementById('moon').classList.toggle("d-none")
-        }
-        if(weather.includes('sun'))
-        {
-            handleWeather();
-            if(document.getElementById('sun').getAttribute('class').includes('d-none')){
-                document.getElementById('sun').classList.toggle("d-none")
-            }
-        }
-        if(weather.includes('rain')){
-            if(document.getElementById('cloud').getAttribute('class').includes('d-none')){
-                document.getElementById('cloud').classList.toggle("d-none")
-            }
-        }
-        if(!document.getElementById('body').getAttribute('class').includes('bg-info text-dark')){
-            document.getElementById("body").setAttribute("class", "bg-info text-dark");
-        }
-    }else{
-        document.getElementById("body").setAttribute("class", "bg-dark text-white");
-        if(!document.getElementById('cloud').getAttribute('class').includes('d-none')){
-            document.getElementById('cloud').classList.toggle("d-none")
-        }
-        if(!document.getElementById('sun').getAttribute('class').includes('d-none')){
-            document.getElementById('sun').classList.toggle("d-none")
-        }
-    }
-}
-
-function updateNightP(){
-    if(isRunning)
-    {
-        if(weather.includes('rain'))
-        {
-            if(document.getElementById('cloud').getAttribute('class').includes('d-none')){
-                document.getElementById('cloud').classList.toggle("d-none")
-            }
-        }
-        else{
-            handleWeather();
-        }
-        if(!document.getElementById('sun').getAttribute('class').includes('d-none')){
-            document.getElementById('sun').classList.toggle("d-none")
-        }
-        if(document.getElementById('moon').getAttribute('class').includes('d-none')){
-            document.getElementById('moon').classList.toggle("d-none")
-        }
-        if(!document.getElementById('body').getAttribute('class').includes('bg-dark text-white')){
-            document.getElementById("body").setAttribute("class", "bg-dark text-white");
-        }
-    }
-    else{
-        document.getElementById("body").setAttribute("class", "bg-dark text-white");
-        if(!document.getElementById('cloud').getAttribute('class').includes('d-none')){
-            document.getElementById('cloud').classList.toggle("d-none")
-        }
-        if(!document.getElementById('moon').getAttribute('class').includes('d-none')){
-            document.getElementById('moon').classList.toggle("d-none")
-        }
-    }
-}
-
-function clearParties(){
-    localStorage.removeItem('listP');
-}
-
-function startPeriodWatcher(){
-    PeriodWatch = setInterval(updatePeriod, 1000 / 60);
-}
-
-function startPeriodWatcherU(){
-    PeriodWatch = setInterval(PeriodUserConf, 1000 / 60);
-}
-
-function stopPeriodWatcher(){
-    clearInterval(PeriodWatch);
-}
-
-function handleWeather(){
-    // weather management
-if(weather.includes("rain")){
-    // console.log({a:document.getElementById('snow').innerHTML});
-    if(!document.getElementById('snow').innerHTML.includes("<")){
-        let inner = `
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-            <div class="snowflake"></div>
-             `
-             document.getElementById('snow').innerHTML = inner;
-             // console.log({inner})
-        }
-    }else{
-        document.getElementById('snow').innerHTML = "";
-    }
-}
-
-// variables 
-
-let PeriodWatch;
-let cWidth;
-let cHeight;
-let canvas = null;
-let canvas1 = null;
-let ctx = null;
-let myvar;
-let images;
-
-let players = [];
-let bestP = {};
-
-let frames = 0;
-let player;
-let gravity;
-let obstacles = [];
-let gameSpeed;
-let keys = {};
-let interval = null;
-let isRunning = false;
-
-let weather = 'rain,sun';
-let period;
-
-let initialSpawTimer = 180;
-let spawnTimer = initialSpawTimer;
-
-let MyWeather = new Weather()
-// let MyWeather = {
-//     "app_temp": 24.8,
-//     "aqi": 15,
-//     "city_name": "Takoradi",
-//     "clouds": 88,
-//     "country_code": "GH",
-//     "datetime": "2022-12-03:09",
-//     "dewpt": 22.1,
-//     "dhi": 209.55,
-//     "dni": 645.76,
-//     "elev_angle": 43.07,
-//     "ghi": 587.35,
-//     "gust": 6,
-//     "h_angle": -30,
-//     "lat": 0,
-//     "lon": 0,
-//     "ob_time": "2022-12-03 09:22",
-//     "pod": "d",
-//     "precip": 0.7466421,
-//     "pres": 1010.5,
-//     "rh": 89,
-//     "slp": 1010.5,
-//     "snow": 0,
-//     "solar_rad": 275.5,
-//     "sources": [
-//         "analysis"
-//     ],
-//     "state_code": "09",
-//     "station": "D7059",
-//     "sunrise": "05:47",
-//     "sunset": "17:52",
-//     "temp": 24,
-//     "timezone": "Africa/Accra",
-//     "ts": 1670059330,
-//     "uv": 1.9880596,
-//     "vis": 16,
-//     "weather": {
-//         "description": "Drizzle",
-//         "code": 301,
-//         "icon": "d02d"
-//     },
-//     "wind_cdir": "NW",
-//     "wind_cdir_full": "northwest",
-//     "wind_dir": 321,
-//     "wind_spd": 6.0323224
-// }
-
-handleWeather()
-
+// Instantiate weather and audio
+let MyWeather = new Weather();
 
 let song = new Audio('./docs/assets/sounds/som_1.mp3');
 song.loop = true;
 let gameOverSong = new Audio('./docs/assets/sounds/game-over.wav');
 let levelUpSong = new Audio('./docs/assets/sounds/level-up.mp3');
+
+handleWeather();

@@ -21,8 +21,8 @@ images = [
 ]
 
 // listeners
-saveButton.onclick = () => {
-    event.preventDefault();
+saveButton.onclick = (e) => {
+    e.preventDefault();
     if(document.getElementById('validationDefault03').value.localeCompare("") != 0 
         && document.getElementById('validationDefault02').value.localeCompare("") != 0)
     {
@@ -85,24 +85,19 @@ soundChecker.onchange = () => {
     else{
         song.pause();
     }
-    console.log(soundChecker.checked)
 }
 
 
-titleButton.onclick = () => {
-    event.preventDefault();
+titleButton.onclick = (e) => {
+    e.preventDefault();
     if (document.getElementById('pseudo').value != "") {
         drawCanvas('canvasP', 'canvas');
-        drawCanvas('canvasP', 'canvas1');
 
         canvas = document.getElementById('canvas');
-        canvas1 = document.getElementById('canvas1');
         ctx = canvas.getContext('2d');
-        // console.log(document.getElementById('canvasP').innerHTML);
         cWidth = canvas.width;
         cHeight = canvas.height;
         titleScreen.classList.toggle('d-none');
-        levelsScreen.classList.toggle('d-none');
         levelsScreen.classList.toggle('d-none');
         // canvas.classList.toggle('first-background');
         /* bgTVScreen.classList.toggle('d-none'); */
