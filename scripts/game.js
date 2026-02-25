@@ -129,6 +129,13 @@ restartButton.onclick = () => {
 };
 
 
+// ── Controls hint: show desktop or mobile version ──
+if (window.mobileCheck()) {
+    document.querySelector('.controls-mobile').classList.remove('d-none');
+} else {
+    document.querySelector('.controls-desktop').classList.remove('d-none');
+}
+
 // watch period
 startPeriodWatcher();
 let listening = document.body.addEventListener("click", function () {

@@ -741,17 +741,6 @@ body {
     letter-spacing: 0.05em;
 }
 
-/* Desktop : afficher clavier, cacher tactile */
-@media (hover: hover) and (pointer: fine) {
-    .controls-desktop { display: flex; }
-    .controls-mobile  { display: none;  }
-}
-
-/* Mobile/tactile : afficher tactile, cacher clavier */
-@media (hover: none) and (pointer: coarse) {
-    .controls-desktop { display: none;  }
-    .controls-mobile  { display: flex; }
-}
 
 /* ── Game-over screen subtle prehistoric tint ── */
 #game-over-screen {
