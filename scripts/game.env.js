@@ -111,13 +111,8 @@ function drawCanvas(parent, id) {
     let canvas = document.createElement('canvas');
     const div = document.getElementById(parent);
     canvas.id = id;
-    if(window.mobileCheck() == true){
-        canvas.width = window.screen.width;
-        canvas.height = window.screen.height - 8*window.screen.height/100;
-    }else{
-        canvas.width = window.screen.width;
-        canvas.height = window.screen.height - 12*window.screen.height/100;
-    }
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
     div.appendChild(canvas);
 }
 

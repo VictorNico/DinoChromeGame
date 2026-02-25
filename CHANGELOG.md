@@ -6,6 +6,36 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/)
 
 ---
 
+## [2.1.2] - 2026-02-25
+
+### Corrigé
+- **Canvas mobile hors-écran** : `window.screen.width/height` remplacé par `window.innerWidth/innerHeight` dans `drawCanvas()` (`game.env.js`) — le canvas utilise désormais l'espace réellement disponible dans le navigateur plutôt que les dimensions physiques du device
+- **Hauteur viewport mobile** : ajout de `height: 100dvh` (Dynamic Viewport Height) sur `html, body` dans `styles.css` en complément de `100vh` — corrige le débordement causé par les barres d'adresse/navigation du navigateur
+- **Suppression de la compensation manuelle** : la soustraction de 8 % / 12 % de hauteur dans `drawCanvas()` est supprimée ; `window.innerHeight` fournit directement la valeur exacte
+- **Meta viewport** : ajout de `viewport-fit=cover` dans `index.html` pour un affichage plein écran correct sur iOS (encoche, Dynamic Island)
+
+---
+
+## [2.1.1] - 2026-02-25
+
+### Ajouté
+- **Scène préhistorique canvas** (`game.env.js` — `drawBackground()`) : ciel dégradé jour/nuit, étoiles animées (nuit), couche de montagnes arrière, volcan avec cratère, lueur lava radiale animée, puffs de fumée, montagne avant, sol dégradé — tout dessiné en Canvas 2D à chaque frame
+- **Thème CSS préhistorique** (`styles.css`) : classes `.prehistoric-day` et `.prehistoric-night` remplaçant les classes Bootstrap `bg-info`/`bg-dark` ; styles dédiés `#title-screen`, `.ember-particle`
+- **Ambiance écran titre** (`game.js`) : 8 particules ember animées générées dynamiquement ; décoration volcan SVG (coin bas-droit) et fougère SVG (coin bas-gauche)
+
+### Modifié
+- **Weather API** (`Weather.js`) : migration de Weatherbit / RapidAPI (clé payante, instable) vers **Open-Meteo** (gratuit, sans clé API) — codes WMO remplacent les anciens codes Weatherbit ; `getDecisionPeriod()` utilise désormais le champ `is_day` au lieu de `pod`
+- **Boucle de jeu — écran noir après game-over** (`game.env.js`) : `isRunning = false` désormais positionné **avant** `cancelAnimationFrame` pour couper proprement la boucle RAF sans frame résiduelle
+- **Freeze interface** (`game.env.js`) : `gameClock` instancié une seule fois dans `start()` (variable globale `state.js`) et réutilisé dans `update()` — supprime la recréation d'instance à 60 fps qui bloquait l'interface
+- **Son de saut** (`personagem.js`) : appel `jumpSound.play()` conditionné au bloc `if (grounded)` — évitait un son parasite quand le joueur appuyait en l'air
+- **Événements tactiles** (`personagem.js`) : guard `if (!isRunning) return` sur `touchstart` — empêche l'interférence des touches avec les écrans titre et game-over ; `pseudo` input protégé via `stopPropagation` sur mobile
+- `state.js` : ajout de `let gameClock = null` comme variable d'état globale
+
+### Corrigé
+- **Faux positifs de collision** (`personagem.js`) : hitbox réduite par marges internes configurables — `pX=8`, `pT=10`, `pB=2` côté joueur et `eX=7`, `eT=7` côté obstacle — élimine les collisions fantômes sur les zones transparentes des sprites
+
+---
+
 ## [2.1.0] - 2026-02-24
 
 ### Ajouté
