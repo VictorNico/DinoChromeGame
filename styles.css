@@ -594,6 +594,10 @@ body {
     overflow: hidden !important;
 }
 
+.title-card {
+    width: min(540px, calc(100% - 2rem));
+}
+
 #title-screen > .card {
     background: rgba(12, 4, 1, 0.87) !important;
     border: 1px solid rgba(220, 85, 0, 0.32) !important;
@@ -610,6 +614,13 @@ body {
     color: #FF8C42 !important;
     text-shadow: 0 0 18px rgba(255, 105, 0, 0.55), 0 0 38px rgba(255, 50, 0, 0.25);
     font-weight: bold;
+}
+
+@media (max-width: 767px) {
+    #title-screen h1 { font-size: 1.6rem; }
+    #title-screen h3 { font-size: 1rem; }
+    #title-screen .card-body { padding: 1rem; }
+    #title-screen .btn-primary { width: 100%; margin-top: 0.75rem; }
 }
 
 #title-screen .form-label { color: #C8A070 !important; }
