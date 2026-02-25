@@ -50,11 +50,11 @@ function updateDayP() {
                 document.getElementById('cloud').classList.toggle("d-none");
             }
         }
-        if (!document.getElementById('body').getAttribute('class').includes('bg-info text-dark')) {
-            document.getElementById("body").setAttribute("class", "bg-info text-dark");
+        if (!document.getElementById('body').getAttribute('class').includes('prehistoric-day')) {
+            document.getElementById("body").setAttribute("class", "prehistoric-day text-dark");
         }
     } else {
-        document.getElementById("body").setAttribute("class", "bg-dark text-white");
+        document.getElementById("body").setAttribute("class", "prehistoric-night text-white");
         if (!document.getElementById('cloud').getAttribute('class').includes('d-none')) {
             document.getElementById('cloud').classList.toggle("d-none");
         }
@@ -79,11 +79,11 @@ function updateNightP() {
         if (document.getElementById('moon').getAttribute('class').includes('d-none')) {
             document.getElementById('moon').classList.toggle("d-none");
         }
-        if (!document.getElementById('body').getAttribute('class').includes('bg-dark text-white')) {
-            document.getElementById("body").setAttribute("class", "bg-dark text-white");
+        if (!document.getElementById('body').getAttribute('class').includes('prehistoric-night')) {
+            document.getElementById("body").setAttribute("class", "prehistoric-night text-white");
         }
     } else {
-        document.getElementById("body").setAttribute("class", "bg-dark text-white");
+        document.getElementById("body").setAttribute("class", "prehistoric-night text-white");
         if (!document.getElementById('cloud').getAttribute('class').includes('d-none')) {
             document.getElementById('cloud').classList.toggle("d-none");
         }

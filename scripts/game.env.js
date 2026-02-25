@@ -1,4 +1,111 @@
 
+// ── Prehistoric background drawn on canvas each frame ──
+function drawBackground() {
+    const isNight = period && period.includes('n');
+
+    // 1. Sky gradient
+    const skyGrad = ctx.createLinearGradient(0, 0, 0, cHeight);
+    if (isNight) {
+        skyGrad.addColorStop(0,    '#050010');
+        skyGrad.addColorStop(0.45, '#130430');
+        skyGrad.addColorStop(0.72, '#2A0C08');
+        skyGrad.addColorStop(1,    '#3D1200');
+    } else {
+        skyGrad.addColorStop(0,    '#FFE8D0');
+        skyGrad.addColorStop(0.28, '#F4A460');
+        skyGrad.addColorStop(0.62, '#C85A00');
+        skyGrad.addColorStop(1,    '#7B2D00');
+    }
+    ctx.fillStyle = skyGrad;
+    ctx.fillRect(0, 0, cWidth, cHeight);
+
+    // 2. Stars (night only)
+    if (isNight) {
+        ctx.fillStyle = 'rgba(255, 248, 210, 0.88)';
+        [[5,5],[15,10],[25,3],[35,8],[45,4],[55,12],[65,6],[75,9],[85,2],[92,7],
+         [10,18],[30,15],[50,20],[70,16],[88,13],[20,8],[42,15],[62,3],[80,11]
+        ].forEach(([xP, yP]) => {
+            ctx.beginPath();
+            ctx.arc(cWidth * xP / 100, cHeight * yP / 100, 1.2, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    // 3. Back mountain layer
+    ctx.fillStyle = isNight ? '#0C0025' : '#6B2800';
+
+    // Back-left mountain
+    ctx.beginPath();
+    ctx.moveTo(-cWidth * 0.05, cHeight * 0.75);
+    ctx.lineTo(cWidth * 0.10,  cHeight * 0.32);
+    ctx.lineTo(cWidth * 0.24,  cHeight * 0.75);
+    ctx.closePath();
+    ctx.fill();
+
+    // Volcano (right side with crater)
+    ctx.beginPath();
+    ctx.moveTo(cWidth * 0.55,  cHeight * 0.75);
+    ctx.lineTo(cWidth * 0.72,  cHeight * 0.20);
+    ctx.lineTo(cWidth * 0.755, cHeight * 0.185);
+    ctx.lineTo(cWidth * 0.805, cHeight * 0.185);
+    ctx.lineTo(cWidth * 0.84,  cHeight * 0.20);
+    ctx.lineTo(cWidth * 1.02,  cHeight * 0.75);
+    ctx.closePath();
+    ctx.fill();
+
+    // 4. Lava glow + animated smoke at crater
+    const cX = cWidth * 0.78;
+    const cY = cHeight * 0.185;
+    const glowR = cWidth * 0.055 + cWidth * 0.008 * Math.sin(frames * 0.04);
+
+    const lavaGlow = ctx.createRadialGradient(cX, cY, 0, cX, cY, glowR * 2);
+    if (isNight) {
+        lavaGlow.addColorStop(0,   'rgba(255, 80, 0, 0.75)');
+        lavaGlow.addColorStop(0.4, 'rgba(200, 30, 0, 0.35)');
+        lavaGlow.addColorStop(1,   'rgba(140, 0, 0, 0)');
+    } else {
+        lavaGlow.addColorStop(0,   'rgba(255, 215, 0, 0.65)');
+        lavaGlow.addColorStop(0.4, 'rgba(255, 100, 0, 0.30)');
+        lavaGlow.addColorStop(1,   'rgba(255, 40, 0, 0)');
+    }
+    ctx.fillStyle = lavaGlow;
+    ctx.beginPath();
+    ctx.arc(cX, cY, glowR * 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Smoke puffs
+    const smokeA = 0.18 + 0.06 * Math.sin(frames * 0.03);
+    ctx.fillStyle = isNight
+        ? `rgba(60, 15, 15, ${smokeA})`
+        : `rgba(100, 45, 10, ${smokeA})`;
+    ctx.beginPath(); ctx.arc(cX, cY - cHeight * 0.05, cWidth * 0.022, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cX + cWidth * 0.015, cY - cHeight * 0.09, cWidth * 0.016, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.arc(cX - cWidth * 0.01,  cY - cHeight * 0.12, cWidth * 0.012, 0, Math.PI * 2); ctx.fill();
+
+    // 5. Front mountain (darker, closer)
+    ctx.fillStyle = isNight ? '#050012' : '#3C1500';
+    ctx.beginPath();
+    ctx.moveTo(-cWidth * 0.02, cHeight * 0.82);
+    ctx.lineTo(cWidth * 0.14,  cHeight * 0.50);
+    ctx.lineTo(cWidth * 0.18,  cHeight * 0.47);
+    ctx.lineTo(cWidth * 0.22,  cHeight * 0.50);
+    ctx.lineTo(cWidth * 0.42,  cHeight * 0.82);
+    ctx.closePath();
+    ctx.fill();
+
+    // 6. Ground fill
+    const groundGrad = ctx.createLinearGradient(0, cHeight * 0.82, 0, cHeight);
+    if (isNight) {
+        groundGrad.addColorStop(0, '#1C0500');
+        groundGrad.addColorStop(1, '#080200');
+    } else {
+        groundGrad.addColorStop(0, '#6B2800');
+        groundGrad.addColorStop(1, '#3D1500');
+    }
+    ctx.fillStyle = groundGrad;
+    ctx.fillRect(0, cHeight * 0.82, cWidth, cHeight);
+}
+
 // methods
 function drawCanvas(parent, id) {
     let canvas = document.createElement('canvas');
@@ -69,9 +176,13 @@ function update() {
 
     frames++;
     ctx.clearRect(0, 0, cWidth, cHeight);
+    drawBackground();
 
-    // HUD text color
-    ctx.fillStyle = period && period.includes('n') ? "white" : "black";
+    // HUD text — warm cream (night) / dark brown (day), with shadow for contrast
+    const isNight = period && period.includes('n');
+    ctx.fillStyle  = isNight ? "rgba(255, 220, 175, 0.95)" : "rgba(20, 8, 0, 0.92)";
+    ctx.shadowColor = isNight ? "rgba(0,0,0,0.85)" : "rgba(255,200,100,0.55)";
+    ctx.shadowBlur  = 5;
     ctx.font = "2vh Arial";
 
     ctx.fillText("" + window.atob(localStorage.getItem("lastname")), 0, 50);
@@ -96,8 +207,10 @@ function update() {
         ctx.fillText("level : " + level, cWidth - 10*cWidth/100, 110);
     }
 
+    ctx.shadowBlur = 0;
+
     // draw ground line
-    ctx.strokeStyle = period && period.includes('n') ? 'white' : 'black';
+    ctx.strokeStyle = isNight ? 'rgba(200, 120, 60, 0.55)' : 'rgba(80, 30, 0, 0.7)';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(0, cHeight - 1);

@@ -562,3 +562,106 @@ body {
 .snowflake:nth-child(6n) {
     filter: blur(1px);
 }
+
+
+/* ================================================================
+   PREHISTORIC THEME
+   ================================================================ */
+
+/* Body backgrounds — replace Bootstrap bg-info / bg-dark */
+.prehistoric-day {
+    background:
+        radial-gradient(ellipse at 85% 100%, rgba(160, 35, 0, 0.65) 0%, transparent 42%),
+        linear-gradient(180deg, #FFE8D0 0%, #F4A460 28%, #C85A00 60%, #7B2D00 100%) !important;
+    color: #2C1A0E !important;
+}
+
+.prehistoric-night {
+    background:
+        radial-gradient(ellipse at 80% 100%, rgba(220, 45, 0, 0.32) 0%, transparent 38%),
+        linear-gradient(180deg, #050010 0%, #130430 40%, #2A0C08 72%, #3D1200 100%) !important;
+    color: #E8D5B7 !important;
+}
+
+/* ── Title screen ── */
+#title-screen {
+    background:
+        radial-gradient(ellipse at 72% 100%, rgba(210, 55, 0, 0.7) 0%, transparent 44%),
+        radial-gradient(ellipse at 22% 92%, rgba(90, 18, 0, 0.45) 0%, transparent 32%),
+        linear-gradient(180deg, #080215 0%, #1A0810 35%, #3C1103 68%, #5A1800 100%) !important;
+    color: #E8D5B7 !important;
+    overflow: hidden !important;
+}
+
+#title-screen > .card {
+    background: rgba(12, 4, 1, 0.87) !important;
+    border: 1px solid rgba(220, 85, 0, 0.32) !important;
+    box-shadow:
+        0 0 35px rgba(200, 65, 0, 0.22),
+        0 8px 32px rgba(0, 0, 0, 0.5),
+        inset 0 0 25px rgba(100, 25, 0, 0.12) !important;
+    z-index: 1;
+    position: relative;
+}
+
+#title-screen h1,
+#title-screen h3 {
+    color: #FF8C42 !important;
+    text-shadow: 0 0 18px rgba(255, 105, 0, 0.55), 0 0 38px rgba(255, 50, 0, 0.25);
+    font-weight: bold;
+}
+
+#title-screen .form-label { color: #C8A070 !important; }
+#title-screen small        { color: #8A6040 !important; }
+
+#title-screen .form-control {
+    background:   rgba(28, 8, 2, 0.72) !important;
+    border-color: rgba(185, 65, 0, 0.38) !important;
+    color:        #F0D0A0 !important;
+}
+#title-screen .form-control::placeholder { color: rgba(170, 110, 55, 0.45) !important; }
+#title-screen .form-control:focus {
+    border-color: rgba(255, 105, 0, 0.58) !important;
+    box-shadow:   0 0 0 0.2rem rgba(255, 80, 0, 0.18) !important;
+}
+
+#title-screen .btn-primary {
+    background:   linear-gradient(135deg, #CC4400, #FF6B1A) !important;
+    border-color: #AA3300 !important;
+    box-shadow:   0 0 12px rgba(255, 80, 0, 0.35) !important;
+}
+#title-screen .btn-primary:hover {
+    background: linear-gradient(135deg, #FF6B1A, #FF8C42) !important;
+}
+
+/* ── Floating ember particles (title screen) ── */
+@keyframes ember-float {
+    0%   { transform: translateY(0)     translateX(0)    scale(1);   opacity: 0.85; }
+    35%  { transform: translateY(-35vh) translateX(14px) scale(0.75); opacity: 0.6;  }
+    70%  { transform: translateY(-72vh) translateX(-9px) scale(0.4);  opacity: 0.25; }
+    100% { transform: translateY(-115vh) translateX(6px) scale(0.1);  opacity: 0;    }
+}
+
+.ember-particle {
+    position: absolute;
+    width: 5px;
+    height: 7px;
+    border-radius: 50% 50% 42% 42%;
+    background: radial-gradient(ellipse at 50% 28%, #FFD200, #FF5500 55%, #BB1100 100%);
+    box-shadow: 0 0 7px 2px rgba(255, 105, 0, 0.5);
+    pointer-events: none;
+    animation: ember-float ease-in infinite;
+    z-index: 0;
+}
+
+/* ── Canvas glow ── */
+#canvas {
+    box-shadow: 0 0 28px rgba(200, 80, 0, 0.18), 0 0 60px rgba(140, 30, 0, 0.08);
+}
+
+/* ── Game-over screen subtle prehistoric tint ── */
+#game-over-screen {
+    background:
+        radial-gradient(ellipse at 78% 100%, rgba(160, 30, 0, 0.25) 0%, transparent 42%),
+        linear-gradient(180deg, #070115 0%, #160708 55%, #2C0A00 100%) !important;
+}
