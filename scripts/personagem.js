@@ -44,13 +44,19 @@ class Player {
     bottom() {
         return this.y + this.height;
     };
-    // detect colision
+    // detect colision — inset hitbox for pixel-accurate feel
     colision(enemy) {
+        const pX = 8;  // player: shrink left & right
+        const pT = 10; // player: shrink top (transparent space above dino head)
+        const pB = 2;  // player: minimal shrink bottom (feet)
+        const eX = 7;  // obstacle: shrink left & right (thin arms/wings at edges)
+        const eT = 7;  // obstacle: shrink top (12% empty top on cactus, thin wings on ptero)
+
         return !(
-            this.bottom() < enemy.top() ||
-            this.top() > enemy.bottom() ||
-            this.right() < enemy.left() ||
-            this.left() > enemy.right()
+            (this.bottom() - pB) < (enemy.top()    + eT) ||
+            (this.top()    + pT) >  enemy.bottom()        ||
+            (this.right()  - pX) < (enemy.left()   + eX)  ||
+            (this.left()   + pX) > (enemy.right()  - eX)
         );
     };
 
