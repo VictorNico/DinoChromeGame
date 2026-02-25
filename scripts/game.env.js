@@ -29,7 +29,9 @@ function gameLoop(timestamp) {
         lastTime = timestamp - (elapsed % FRAME_DURATION);
         update();
     }
-    interval = requestAnimationFrame(gameLoop);
+    if (isRunning) {
+        interval = requestAnimationFrame(gameLoop);
+    }
 }
 
 // Start the game
@@ -37,6 +39,7 @@ function start() {
     gameSpeed = 5;
     gravity = 0.9;
     lastTime = 0;
+    gameClock = new clocks();
     interval = requestAnimationFrame(gameLoop);
     myVar = setInterval(function(){
         gameSpeed += 0.1;
@@ -75,7 +78,7 @@ function update() {
 
     const best = Object.keys(bestP).length !== 0 ? bestP.score : players[players.length - 1].score;
     const current = players[players.length - 1];
-    const Clock = new clocks();
+    const Clock = gameClock;
     const level = Math.max(1, Math.floor(gameSpeed - 4));
     const temp = MyWeather.currentWeather ? MyWeather.currentWeather.temp + "°C" : "--°C";
 
@@ -157,9 +160,9 @@ function update() {
             localStorage.setItem("listP", window.btoa(JSON.stringify(Object.assign({}, players))));
 
             obstacles = [];
+            isRunning = false;
             cancelAnimationFrame(interval);
             clearInterval(myVar);
-            isRunning = false;
             isPaused = false;
             spawnTimer = initialSpawTimer;
             gameSpeed = 5;

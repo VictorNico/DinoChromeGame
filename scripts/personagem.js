@@ -85,9 +85,9 @@ class Player {
 
     // jump function
     jump() {
-        this.jumpSound.currentTime = 0;
-        this.jumpSound.play();
         if (this.grounded && this.jumpTimer === 0) {
+            this.jumpSound.currentTime = 0;
+            this.jumpSound.play();
             this.jumpTimer = 1;
             this.speedY = -this.jumpForce * (3/2);
         } else if (this.jumpTimer > 0 && this.jumpTimer < 10) {
@@ -127,6 +127,7 @@ document.addEventListener('keyup', (e) => {
 });
 
 document.addEventListener('touchstart', (e) => {
+    if (!isRunning) return;
     e.preventDefault();
     const touchY = e.touches[0].clientY;
     const screenH = window.screen.height;
@@ -140,4 +141,14 @@ document.addEventListener('touchstart', (e) => {
 document.addEventListener('touchend', () => {
     keys["ArrowUp"] = false;
     keys["ArrowDown"] = false;
+});
+
+// Ensure the pseudo input is always focusable on mobile
+document.addEventListener('DOMContentLoaded', () => {
+    const pseudoInput = document.getElementById('pseudo');
+    if (pseudoInput) {
+        pseudoInput.addEventListener('touchstart', (e) => {
+            e.stopPropagation();
+        }, { passive: true });
+    }
 });

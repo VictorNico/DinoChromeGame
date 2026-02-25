@@ -1,82 +1,58 @@
 /**
  * @Class Weather
- * Build within Weather API from Weatherbit.io solutions
+ * Uses Open-Meteo API — free, no API key required
+ * https://open-meteo.com/
  */
 class Weather {
-    /**
-     * @Constructor
-     * return an instance of weather
-     */
     constructor() {
         this.gps = new GPS();
         this.currentWeather = null;
         this.interval = null;
-        this.rain = [500, 501, 502, 511, 520, 521, 522, 300, 301, 302];
-        this.rainsun = [200, 201, 202]
-        this.drizzle = [230, 231, 232,233,611,612,700,711,721,731,741,751,];
-        this.snow = [600, 601, 602, 610];
-        this.clearSky = [800];
-        this.fewCloud = [801];
-        this.scatteredCloud = [802];
-        this.overcastCloud = [804];
-        this.unknPrecipitation = [900];
-        this.getCurrentWeather()
+
+        // WMO weather code groups
+        this.rainCodes    = [51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 71, 73, 75, 77, 80, 81, 82, 85, 86];
+        this.rainsunCodes = [95, 96, 99];
+        // everything else (0,1,2,3,45,48…) → "sun"
+
+        this.getCurrentWeather();
     }
 
-    /**
-     * @Methods
-     * @param lon, longitude
-     * @param lat, lattitude
-     * 
-     * @return 
-     *          rain if the current weather is as rainning
-     *          sun else
-     */
     async getCurrentWeather() {
-        let that = this;
-        const url = new URL('https://weatherbit-v1-mashape.p.rapidapi.com/current');
-        url.searchParams.set('lon', this.gps.getLon());
-        url.searchParams.set('lat', this.gps.getLat());
+        const url = new URL('https://api.open-meteo.com/v1/forecast');
+        url.searchParams.set('latitude',     this.gps.getLat());
+        url.searchParams.set('longitude',    this.gps.getLon());
+        url.searchParams.set('current',      'weather_code,temperature_2m,is_day');
+        url.searchParams.set('forecast_days', '1');
 
-        await fetch(url, {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': window.atob("NjM4MjNmY2ZiOG1zaGE0ZGM5OTYwZGFmZTFlNHAxYzlhMDRqc25hZDY4MzZmMjZiNjI="),
-                'X-RapidAPI-Host': 'weatherbit-v1-mashape.p.rapidapi.com'
-            }
-        }).then(function(response) {
-            return response.json();
-        }).then(function(data) {
-            that.currentWeather = data.data[0];
-            weather = that.getDecisionWeather();
-            period = that.getDecisionPeriod();
-            // console.log({weather,period})
-            document.getElementById('validationDefault02').value = weather;
-            document.getElementById('validationDefault03').value = period;
-            setSnowflakes(weather.includes("rain"));
-        }).catch(function(error) {
-            console.error(error);
-        });
-    }
-
-    async Watcher() {
-        this.interval = setInterval(await this.getCurrentWeather, 10000);
+        await fetch(url, { method: 'GET' })
+            .then(response => response.json())
+            .then(data => {
+                const c = data.current;
+                // Keep the same interface expected by game.env.js
+                this.currentWeather = {
+                    temp:    Math.round(c.temperature_2m),
+                    weather: { code: c.weather_code },
+                    is_day:  c.is_day
+                };
+                weather = this.getDecisionWeather();
+                period  = this.getDecisionPeriod();
+                document.getElementById('validationDefault02').value = weather;
+                document.getElementById('validationDefault03').value = period;
+                setSnowflakes(weather.includes("rain"));
+            })
+            .catch(error => {
+                console.error('Weather fetch error:', error);
+            });
     }
 
     getDecisionWeather() {
-        if (this.rain.includes(this.currentWeather.weather.code)) { return "rain"; } 
-        else if (this.drizzle.includes(this.currentWeather.weather.code)) { return "sun"; } 
-        else if (this.snow.includes(this.currentWeather.weather.code)) { return "rain"; } 
-        else if (this.rainsun.includes(this.currentWeather.weather.code)) { return "rain,sun"; } 
-        else if (this.clearSky.includes(this.currentWeather.weather.code)) { return "sun"; } 
-        else if (this.fewCloud.includes(this.currentWeather.weather.code)) { return "sun"; } 
-        else if (this.scatteredCloud.includes(this.currentWeather.weather.code)) { return "sun"; } 
-        else if (this.overcastCloud.includes(this.currentWeather.weather.code)) { return "sun"; } 
-        else if (this.unknPrecipitation.includes(this.currentWeather.weather.code)) { return "rain"; }
-        return "rain";
+        const code = this.currentWeather.weather.code;
+        if (this.rainsunCodes.includes(code)) return "rain,sun";
+        if (this.rainCodes.includes(code))    return "rain";
+        return "sun";
     }
 
-    getDecisionPeriod(){
-        return this.currentWeather.pod;
+    getDecisionPeriod() {
+        return this.currentWeather.is_day === 1 ? 'd' : 'n';
     }
 }

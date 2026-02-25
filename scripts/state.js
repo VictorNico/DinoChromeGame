@@ -28,3 +28,4 @@ let initialSpawTimer = 180;
 let spawnTimer = initialSpawTimer;
 
 let lastTime = 0;
+let gameClock = null;
